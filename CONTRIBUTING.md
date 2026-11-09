@@ -33,3 +33,18 @@ docs: английская версия readme
 ```
 
 Одна законченная штука, один коммит. / One finished thing, one commit.
+
+### Чего не писать в коммитах / What not to put in commit messages
+
+- мат, шутки и «хрень»; / no swearing, jokes or nonsense;
+- расплывчатое `fix`, `update`, `правки`, `ещё одна правка`, `мелочи`; / no vague `fix`, `update`, `tweaks`, `one more fix`;
+- упоминания форматирования, пустых строк, `---`, опечаток и «исправил свою ошибку»; / no mentions of formatting, blank lines, `---`, typos or "fixed my mistake";
+- эмодзи и длинные тела с перечислением мелочей; / no emoji and no long bodies listing trivia;
+- два коммита с одним смыслом подряд: собери правки и проверь их до коммита. / no two commits with the same meaning in a row: collect your edits and check them before committing.
+
+Называй коммит по тому, что получит пользователь. / Name the commit after what the user gets.
+
+```text
+хорошо / good:  feat: индикатор нагрузки в трее
+плохо / bad:    fix: ещё один лишний --- в readme
+```
