@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: "📖 Playbook (пошаговая инструкция)"
+    url: https://github.com/swensi17/win-customization/blob/main/docs/AGENT_PLAYBOOK.md
+    about: "Подробные шаги, проверки и ловушки / Detailed steps, checks and pitfalls"
+  - name: "❓ Частые проблемы / Troubleshooting"
+    url: https://github.com/swensi17/win-customization#-частые-проблемы
+    about: "Сначала проверь этот раздел / Check this section first"

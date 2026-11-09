@@ -1,0 +1,20 @@
+name: "✨ Идея / Feature request"
+description: "Предложить улучшение оформления / Suggest a customization improvement"
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: idea
+    attributes:
+      label: "Что добавить или изменить / What to add or change"
+    validations:
+      required: true
+  - type: textarea
+    id: why
+    attributes:
+      label: "Зачем / Why"
+      description: "Какую проблему это решает / What problem it solves"
+  - type: textarea
+    id: refs
+    attributes:
+      label: "Примеры и ссылки / Examples and links"
+      description: "Скриншоты, похожие проекты / Screenshots, similar projects"

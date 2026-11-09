@@ -1,0 +1,12 @@
+﻿{
+    "AppVersion":  "1.0.0.0",
+    "Title":  "Aurora Glass",
+    "Desc":  "Dark animated aurora gradients in the win-customization palette",
+    "Author":  "swensi17",
+    "License":  "MIT",
+    "Contact":  "https://github.com/swensi17/win-customization",
+    "Type":  1,
+    "FileName":  "index.html",
+    "Arguments":  null,
+    "IsAbsolutePath":  false
+}

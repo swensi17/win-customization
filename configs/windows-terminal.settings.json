@@ -1,0 +1,133 @@
+﻿{
+    "$help":  "https://aka.ms/terminal-documentation",
+    "$schema":  "https://aka.ms/terminal-profiles-schema",
+    "actions":  [
+                    {
+                        "command":  "quakeMode",
+                        "id":  "User.quakeMode"
+                    }
+                ],
+    "alwaysShowTabs":  false,
+    "copyFormatting":  "none",
+    "copyOnSelect":  true,
+    "defaultProfile":  "{61c54bbd-c2c6-5271-96e7-009a87ff44bf}",
+    "initialCols":  120,
+    "initialRows":  32,
+    "keybindings":  [
+                        {
+                            "id":  "Terminal.CopyToClipboard",
+                            "keys":  "ctrl+c"
+                        },
+                        {
+                            "id":  "Terminal.PasteFromClipboard",
+                            "keys":  "ctrl+v"
+                        },
+                        {
+                            "id":  "Terminal.DuplicatePaneAuto",
+                            "keys":  "alt+shift+d"
+                        },
+                        {
+                            "id":  "User.quakeMode",
+                            "keys":  "win+sc(41)"
+                        }
+                    ],
+    "launchMode":  "default",
+    "newTabMenu":  [
+                       {
+                           "type":  "remainingProfiles"
+                       }
+                   ],
+    "profiles":  {
+                     "defaults":  {
+                                      "adjustIndistinguishableColors":  "indexed",
+                                      "antialiasingMode":  "cleartype",
+                                      "colorScheme":  "Arch Glass",
+                                      "cursorHeight":  100,
+                                      "cursorShape":  "bar",
+                                      "font":  {
+                                                   "face":  "JetBrainsMono Nerd Font",
+                                                   "size":  12,
+                                                   "weight":  "normal"
+                                               },
+                                      "intenseTextStyle":  "bright",
+                                      "opacity":  72,
+                                      "padding":  "14, 10, 14, 10",
+                                      "scrollbarState":  "hidden",
+                                      "useAcrylic":  true
+                                  },
+                     "list":  [
+                                  {
+                                      "commandline":  "%SystemRoot%\\System32\\WindowsPowerShell\\v1.0\\powershell.exe -NoLogo",
+                                      "guid":  "{61c54bbd-c2c6-5271-96e7-009a87ff44bf}",
+                                      "hidden":  false,
+                                      "name":  "Windows PowerShell"
+                                  },
+                                  {
+                                      "commandline":  "%SystemRoot%\\System32\\cmd.exe",
+                                      "guid":  "{0caa0dad-35be-5f56-a8ff-afceeeaa6101}",
+                                      "hidden":  false,
+                                      "name":  "Командная строка"
+                                  },
+                                  {
+                                      "guid":  "{b453ae62-4e3d-5e58-b989-0a998ec441b8}",
+                                      "hidden":  true,
+                                      "name":  "Azure Cloud Shell",
+                                      "source":  "Windows.Terminal.Azure"
+                                  }
+                              ]
+                 },
+    "schemes":  [
+                    {
+                        "background":  "#0B0F14",
+                        "black":  "#1B2028",
+                        "blue":  "#1793D1",
+                        "brightBlack":  "#414868",
+                        "brightBlue":  "#7AA2F7",
+                        "brightCyan":  "#A4DAFF",
+                        "brightGreen":  "#B9F27C",
+                        "brightPurple":  "#C0A8FF",
+                        "brightRed":  "#FF7A93",
+                        "brightWhite":  "#FFFFFF",
+                        "brightYellow":  "#FF9E64",
+                        "cursorColor":  "#1793D1",
+                        "cyan":  "#7DCFFF",
+                        "foreground":  "#C9D1D9",
+                        "green":  "#9ECE6A",
+                        "name":  "Arch Glass",
+                        "purple":  "#BB9AF7",
+                        "red":  "#F7768E",
+                        "selectionBackground":  "#1D4F6E",
+                        "white":  "#A9B1D6",
+                        "yellow":  "#E0AF68"
+                    }
+                ],
+    "showTabsInTitlebar":  true,
+    "snapToGridOnResize":  true,
+    "tabWidthMode":  "compact",
+    "theme":  "Arch Glass UI",
+    "themes":  [
+                   {
+                       "name":  "Arch Glass UI",
+                       "tab":  {
+                                   "background":  "#1a212aD6",
+                                   "iconStyle":  "default",
+                                   "showCloseButton":  "hover",
+                                   "unfocusedBackground":  "#12171dB0"
+                               },
+                       "tabRow":  {
+                                      "background":  "#12171dB8",
+                                      "unfocusedBackground":  "#12171dA0"
+                                  },
+                       "window":  {
+                                      "applicationTheme":  "dark",
+                                      "experimental.rainbowFrame":  false,
+                                      "frame":  null,
+                                      "unfocusedFrame":  null,
+                                      "useMica":  false
+                                  }
+                   }
+               ],
+    "warning.confirmCloseAllTabs":  false,
+    "useAcrylicInTabRow":  true,
+    "minimizeToNotificationArea":  true
+}

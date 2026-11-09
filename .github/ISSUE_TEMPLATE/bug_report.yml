@@ -1,0 +1,48 @@
+name: "🐞 Ошибка / Bug report"
+description: "Что-то не работает после установки / Something does not work after the setup"
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Спасибо за отчёт! Перед отправкой запусти `scripts\Test-Setup.ps1` и приложи вывод.
+        Thanks for the report! Please run `scripts\Test-Setup.ps1` first and paste its output.
+        **Не публикуй токены, пароли и личные данные. / Do not post tokens, passwords or personal data.**
+  - type: input
+    id: component
+    attributes:
+      label: "Компонент / Component"
+      description: "TaskbarX, DWMBlurGlass, ExplorerBlurMica, AcrylicMenus, 7+ Taskbar Tweaker, Windows Terminal, профиль PowerShell / cmd, SysMonTray, ..."
+    validations:
+      required: true
+  - type: textarea
+    id: what
+    attributes:
+      label: "Что случилось / What happened"
+      description: "Что ожидал и что получил / What you expected and what you got"
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: "Шаги для повторения / Steps to reproduce"
+      placeholder: |
+        1. ...
+        2. ...
+  - type: textarea
+    id: testsetup
+    attributes:
+      label: "Вывод Test-Setup.ps1 / Test-Setup.ps1 output"
+      render: text
+  - type: input
+    id: build
+    attributes:
+      label: "Версия Windows / Windows build"
+      description: "winver, например / e.g. Windows 10 Pro 22H2 (19045)"
+    validations:
+      required: true
+  - type: textarea
+    id: screens
+    attributes:
+      label: "Скриншоты / Screenshots"
+      description: "Перетащи картинки сюда / Drag images here"

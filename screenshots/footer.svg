@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="56" viewBox="0 0 600 56" role="img" aria-label="divider">
+  <line x1="0" y1="40" x2="236" y2="40" stroke="#6e7681" stroke-width="2" stroke-linecap="round"/>
+  <line x1="364" y1="40" x2="600" y2="40" stroke="#6e7681" stroke-width="2" stroke-linecap="round"/>
+  <g transform="translate(272 8)">
+    <rect x="0"  y="0"  width="26" height="26" rx="3" fill="#f25022"/>
+    <rect x="30" y="0"  width="26" height="26" rx="3" fill="#7fba00"/>
+    <rect x="0"  y="30" width="26" height="26" rx="3" fill="#00a4ef" transform="translate(0 -4)"/>
+    <rect x="30" y="30" width="26" height="26" rx="3" fill="#ffb900" transform="translate(0 -4)"/>
+  </g>
+</svg>

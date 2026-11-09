@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Aurora Glass</title>
+<style>
+  /* Aurora Glass: тёмные живые обои в палитре терминала. Только CSS-анимации transform (GPU), без JS-циклов. */
+  :root { --bg: #0b0f14; }
+  html, body { margin: 0; height: 100%; overflow: hidden; background: var(--bg); }
+  .blob { position: absolute; width: 120vmax; height: 120vmax; border-radius: 50%; will-change: transform; opacity: .55; }
+  .b1 { background: radial-gradient(circle at center, rgba(23,147,209,.55) 0%, rgba(23,147,209,0) 60%); left: -35vmax; top: -45vmax; animation: d1 38s ease-in-out infinite alternate; }
+  .b2 { background: radial-gradient(circle at center, rgba(124,92,255,.45) 0%, rgba(124,92,255,0) 60%); right: -40vmax; top: -30vmax; animation: d2 46s ease-in-out infinite alternate; }
+  .b3 { background: radial-gradient(circle at center, rgba(14,88,125,.60) 0%, rgba(14,88,125,0) 62%); left: -10vmax; bottom: -70vmax; animation: d3 54s ease-in-out infinite alternate; }
+  .b4 { background: radial-gradient(circle at center, rgba(125,207,255,.22) 0%, rgba(125,207,255,0) 55%); right: -30vmax; bottom: -60vmax; animation: d4 62s ease-in-out infinite alternate; }
+  @keyframes d1 { from { transform: translate(0,0) scale(1); } to { transform: translate(22vmax, 14vmax) scale(1.15); } }
+  @keyframes d2 { from { transform: translate(0,0) scale(1.1); } to { transform: translate(-18vmax, 20vmax) scale(.95); } }
+  @keyframes d3 { from { transform: translate(0,0) scale(1); } to { transform: translate(16vmax, -18vmax) scale(1.2); } }
+  @keyframes d4 { from { transform: translate(0,0) scale(.9); } to { transform: translate(-20vmax, -12vmax) scale(1.1); } }
+  /* мягкая виньетка и лёгкое «стекло» поверх */
+  .veil { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 40%, rgba(11,15,20,0) 40%, rgba(11,15,20,.75) 100%); }
+  .grain { position: absolute; inset: -50%; opacity: .05; pointer-events: none;
+           background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>"); }
+  @media (prefers-reduced-motion: reduce) { .blob { animation: none; } }
+</style>
+</head>
+<body>
+  <div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div><div class="blob b4"></div>
+  <div class="veil"></div><div class="grain"></div>
+</body>
+</html>
