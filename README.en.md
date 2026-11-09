@@ -1,7 +1,9 @@
 <h1 align="center">🪟 win-customization</h1>
 
 <p align="center">
-  🇬🇧 English · <a href="README.md">🇷🇺 Русский</a>
+  <a href="README.md"><img src="https://img.shields.io/badge/%D0%A0%D1%83%D1%81%D1%81%D0%BA%D0%B8%D0%B9-30363d?style=for-the-badge" alt="Русский"></a>
+  <a href="README.en.md"><img src="https://img.shields.io/badge/English-0078d6?style=for-the-badge" alt="English"></a>
+  <a href="README.zh.md"><img src="https://img.shields.io/badge/%E4%B8%AD%E6%96%87-30363d?style=for-the-badge" alt="中文"></a>
 </p>
 
 <p align="center">
