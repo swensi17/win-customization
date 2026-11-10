@@ -245,6 +245,16 @@
 
 <img src="../screenshots/21-aurora.png" width="520">
 
+### Шаг 17. ShellGuard: автовосстановление после зависания Проводника `[AUTO]` (по желанию)
+`scripts\17-shell-guard.ps1` копирует `configs\ShellGuard.ps1` в `C:\ShellGuard`, создаёт ярлык автозагрузки в **настоящей** папке Startup и запускает скрипт скрытым окном. В `Install-Auto.ps1` не входит.
+- Причина: `explorer.exe` иногда зависает (журнал: «Application Hang», Winlogon 1002 «Оболочка неожиданно завершила работу») и перезапускается. TaskbarX и подложка Lively (`WorkerW`) «осиротевают»: панель теряет центр и прозрачность, TaskbarX может вхолостую грузить процессор, живые обои пропадают, остаются статичные.
+- Логика: каждые 5 с сравнивается `StartTime` процесса `explorer.exe` с `StartTime` у TaskbarX и Lively; если они старше Проводника, через 10 с TaskbarX перезапускается (`-tbs=1 -color=0;0;0;0`), а Lively перезапускается целиком. Пауза между ремонтами 90 с, журнал `C:\ShellGuard\guard.log`.
+- `[WARN]` Повторное применение обоев командой `Lively.exe setwp` / `closewp` в такой ситуации не срабатывает (в журнале Lively нет записей, старый плеер остаётся скрытым): нужен полный перезапуск `Lively.exe`, `Lively.Player.WebView2.exe`, `Lively.Watchdog.exe`.
+- `[WARN]` Диагностика: окно плеера `visible=False` и пропавший `WorkerW` (хэндл из журнала Lively `WorkerW initialized`), время запуска `explorer.exe` позже запуска TaskbarX/Lively.
+- `[WARN]` Страж лечит последствия. Причину зависания в Lite-сборке выяснить нельзя (отчёты WER отключены); подозреваемые: расширения Проводника AcrylicMenus и ExplorerBlurMica.
+- `[VERIFY]` `powershell -File C:\ShellGuard\ShellGuard.ps1 -Check` показывает `устарели : False`; `-RepairNow` перезапускает TaskbarX и Lively, строки видны в `guard.log` и в журнале Lively (`Setting wallpaper`).
+- `[ROLLBACK]` `99-rollback.ps1` (останавливает страж, удаляет ярлык и папку `C:\ShellGuard`).
+
 ## 4. Грабли и ограничения
 
 1. **Виртуализация AppData у упакованных (MSIX) агентов.** Если исполнитель запущен из Store-приложения, запись в `%LOCALAPPDATA%` и `%APPDATA%` попадает в `...\Packages\<Приложение>\LocalCache\...`, и Проводник пользователя этих файлов не видит. Симптомы: «Расположение недоступно», ярлык автозагрузки не срабатывает после перезагрузки. Решение: программы в `C:\...`, ярлык автозагрузки писать по реальному пути `...\Roaming\Microsoft\Windows\Start Menu\Programs\Startup`, шаги выполнять с отключённой изоляцией песочницы.

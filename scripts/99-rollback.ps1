@@ -19,5 +19,7 @@ if (Test-Path $bk) { $b = Get-Content $bk -Raw | ConvertFrom-Json
   if ($b.AccentColor)     { Set-ItemProperty "HKCU:\Software\Microsoft\Windows\DWM" -Name AccentColor -Value $b.AccentColor -Type DWord }
   if ($b.ColorizationColor) { Set-ItemProperty "HKCU:\Software\Microsoft\Windows\DWM" -Name ColorizationColor -Value $b.ColorizationColor -Type DWord } }
 # автозагрузка: снять отметки «отключено», поставленные шагом 15
-Remove-ItemProperty "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\StartupApproved\Run" -Name 'Mozilla-Firefox-*' -ErrorAction SilentlyContinueWrite-Host "Вручную: DWMBlurGlass -> 'Удалить'; C:\ExplorerBlurMica\Release\uninstall.cmd; C:\AcrylicMenus\Installer\Uninstall.cmd; 7+ Taskbar Tweaker -> деинсталлятор; затем удали папки в C:\." -ForegroundColor Yellow
+Remove-ItemProperty "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\StartupApproved\Run" -Name 'Mozilla-Firefox-*' -ErrorAction SilentlyContinueGet-CimInstance Win32_Process -Filter "Name='powershell.exe'" | Where-Object { $_.CommandLine -match 'ShellGuard\.ps1' } | ForEach-Object { Stop-Process -Id $_.ProcessId -Force }
+Remove-Item "$([Environment]::GetFolderPath('Startup'))\ShellGuard.lnk" -ErrorAction SilentlyContinue
+Remove-Item "C:\ShellGuard" -Recurse -Force -ErrorAction SilentlyContinueWrite-Host "Вручную: DWMBlurGlass -> 'Удалить'; C:\ExplorerBlurMica\Release\uninstall.cmd; C:\AcrylicMenus\Installer\Uninstall.cmd; 7+ Taskbar Tweaker -> деинсталлятор; затем удали папки в C:\." -ForegroundColor Yellow
 Stop-Process -Name explorer -Force

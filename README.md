@@ -416,6 +416,23 @@ Windows Terminal ставится из Microsoft Store и становится �
 
 </details>
 <details>
+<summary><b>🛡 ShellGuard</b>: автовосстановление после зависания Проводника (по желанию)</summary>
+
+<br>
+
+**Что случается.** Иногда `explorer.exe` зависает, Windows его закрывает и перезапускает (в журнале «Application Hang» и «Оболочка неожиданно завершила работу»). Всё, что было привязано к старому Проводнику, «осиротевает»: TaskbarX теряет центр и прозрачность панели (и может вхолостую грузить процессор), у Lively исчезает подложка рабочего стола (`WorkerW`) и вместо живых обоев остаются статичные.
+
+**Как работает.** `configs/ShellGuard.ps1` каждые 5 секунд сравнивает время запуска Проводника со временем запуска TaskbarX и Lively. Если они старше Проводника, страж ждёт 10 секунд, перезапускает TaskbarX и полностью перезапускает Lively (повторное применение обоев командой `setwp` в Lively 2.x в таком состоянии не срабатывает). Не чаще одного раза в 90 секунд, всё записывается в `C:\ShellGuard\guard.log`.
+
+**Установка.** `scripts/17-shell-guard.ps1` (в `Install-Auto.ps1` не входит, ставится по желанию): копирует скрипт в `C:\ShellGuard`, добавляет ярлык в автозагрузку и запускает скрытым окном.
+
+- состояние без изменений: `powershell -File C:\ShellGuard\ShellGuard.ps1 -Check`;
+- принудительный ремонт: `-RepairNow`.
+
+**Заметки:** около 40 МБ ОЗУ, процессор около 0 %; откат: `scripts/99-rollback.ps1`. Это лечит последствия, но не причину зависания: если Проводник зависает часто, попробуй отключить необязательные расширения (AcrylicMenus, ExplorerBlurMica).
+
+</details>
+<details>
 <summary><b>🎨 Обои</b>: тёмные градиенты 4K</summary>
 
 <br>
@@ -467,6 +484,7 @@ Set-ExecutionPolicy -Scope Process Bypass
     <tr><td>14</td><td>тёмная тема и акцентный цвет</td><td><code>AUTO</code></td></tr>
     <tr><td>15</td><td>обзор и чистка автозагрузки</td><td><code>AUTO</code></td></tr>
     <tr><td>16</td><td>живые обои Aurora Glass (Lively)</td><td><code>AUTO</code> + <code>MANUAL</code></td></tr>
+    <tr><td>17</td><td>ShellGuard: автовосстановление после зависания Проводника (по желанию)</td><td><code>AUTO</code></td></tr>
   </tbody>
 </table>
 
@@ -590,7 +608,7 @@ Copy-Item "$d\settings.json.bak" "$d\settings.json" -Force
   </thead>
   <tbody>
     <tr><td><a href="docs/AGENT_PLAYBOOK.md"><code>docs/AGENT_PLAYBOOK.md</code></a></td><td>пошаговая инструкция с тегами <code>AUTO</code> / <code>MANUAL</code> / <code>VERIFY</code> / <code>ROLLBACK</code> / <code>WARN</code></td></tr>
-    <tr><td><code>scripts/</code></td><td>скрипты по шагам <code>00</code>…<code>16</code>, откат <code>99-rollback.ps1</code>, запуск всего <code>Install-Auto.ps1</code></td></tr>
+    <tr><td><code>scripts/</code></td><td>скрипты по шагам <code>00</code>…<code>17</code>, откат <code>99-rollback.ps1</code>, запуск всего <code>Install-Auto.ps1</code></td></tr>
     <tr><td><code>scripts/Test-Setup.ps1</code></td><td>проверка результата установки (OK / FAIL по каждому пункту)</td></tr>
     <tr><td><code>configs/</code></td><td>готовые конфиги: Windows Terminal, профиль PowerShell, DWMBlurGlass, ExplorerBlurMica, живые обои Lively</td></tr>
     <tr><td><code>screenshots/</code></td><td>кадры «до» и «после», демо-гифка</td></tr>

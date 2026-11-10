@@ -415,6 +415,23 @@ My own web wallpaper (`configs/lively/aurora-glass/`): four large radial gradien
 
 </details>
 <details>
+<summary><b>🛡 ShellGuard</b>: automatic recovery after an Explorer hang (optional)</summary>
+
+<br>
+
+**What happens.** Sometimes `explorer.exe` hangs, Windows closes it and restarts it (the log shows "Application Hang" and "The shell stopped unexpectedly"). Everything attached to the old Explorer is orphaned: TaskbarX loses the centering and transparency of the taskbar (and may burn CPU idling), Lively loses the desktop backdrop window (`WorkerW`) and only the static wallpaper stays instead of the live one.
+
+**How it works.** `configs/ShellGuard.ps1` compares the Explorer start time with the TaskbarX and Lively start times every 5 seconds. If they are older than Explorer, the guard waits 10 seconds, restarts TaskbarX and fully restarts Lively (re-applying the wallpaper with `setwp` does not work in Lively 2.x in this state). At most once per 90 seconds, everything is logged to `C:\ShellGuard\guard.log`.
+
+**Installation.** `scripts/17-shell-guard.ps1` (not part of `Install-Auto.ps1`, installed on demand): copies the script to `C:\ShellGuard`, adds an autostart shortcut and starts it in a hidden window.
+
+- state without changes: `powershell -File C:\ShellGuard\ShellGuard.ps1 -Check`;
+- force a repair: `-RepairNow`.
+
+**Notes:** about 40 MB of RAM, CPU close to 0 %; rollback: `scripts/99-rollback.ps1`. It treats the consequences, not the cause of the hang: if Explorer hangs often, try disabling the optional extensions (AcrylicMenus, ExplorerBlurMica).
+
+</details>
+<details>
 <summary><b>🎨 Wallpapers</b>: dark 4K gradients</summary>
 
 <br>
@@ -558,7 +575,7 @@ If the installation is run by a packaged (Microsoft Store) application, writes t
   </thead>
   <tbody>
     <tr><td><a href="docs/AGENT_PLAYBOOK.md"><code>docs/AGENT_PLAYBOOK.md</code></a></td><td>step-by-step instruction with <code>AUTO</code> / <code>MANUAL</code> / <code>VERIFY</code> / <code>ROLLBACK</code> / <code>WARN</code> tags (Russian)</td></tr>
-    <tr><td><code>scripts/</code></td><td>per-step scripts <code>00</code>…<code>16</code>, rollback <code>99-rollback.ps1</code>, run-everything <code>Install-Auto.ps1</code></td></tr>
+    <tr><td><code>scripts/</code></td><td>per-step scripts <code>00</code>…<code>17</code>, rollback <code>99-rollback.ps1</code>, run-everything <code>Install-Auto.ps1</code></td></tr>
     <tr><td><code>scripts/Test-Setup.ps1</code></td><td>verifies the setup (OK / FAIL per item)</td></tr>
     <tr><td><code>configs/</code></td><td>ready-made configs: Windows Terminal, PowerShell profile, DWMBlurGlass, ExplorerBlurMica</td></tr>
     <tr><td><code>screenshots/</code></td><td>before / after frames, the demo gif</td></tr>

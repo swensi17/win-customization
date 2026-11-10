@@ -44,6 +44,8 @@ Check "cmd оформлен (AutoRun указывает на cmd-autorun.cmd)" {
 Write-Host "`n== Индикатор нагрузки ==" -ForegroundColor Cyan
 Check "SysMonTray запущен"                             { Get-CimInstance Win32_Process -Filter "Name='powershell.exe'" | Where-Object { $_.CommandLine -match 'SysMonTray' } | Select-Object -First 1 }
 Check "SysMonTray в автозагрузке (ярлык в Startup)"    { Test-Path (Join-Path ([Environment]::GetFolderPath('Startup')) 'SysMonTray.lnk') }
+Check "ShellGuard запущен (чинит оформление после зависания Проводника)" { Get-CimInstance Win32_Process -Filter "Name='powershell.exe'" | Where-Object { $_.CommandLine -match 'ShellGuard\.ps1' } | Select-Object -First 1 } -Optional
+Check "ShellGuard в автозагрузке (ярлык в Startup)"     { Test-Path (Join-Path ([Environment]::GetFolderPath('Startup')) 'ShellGuard.lnk') } -Optional
 Write-Host "`n== Шрифт, тема, Quake, обои ==" -ForegroundColor Cyan
 Check "Nerd Font установлен (JetBrainsMono NF)"        { Add-Type -AssemblyName System.Drawing; ((New-Object System.Drawing.Text.InstalledFontCollection).Families | Where-Object Name -match 'JetBrainsMono NF') }
 Check "Терминал использует Nerd Font"                  { (Get-Content (Join-Path $LocalAppData 'Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json') -Raw) -match 'JetBrainsMono Nerd Font' }

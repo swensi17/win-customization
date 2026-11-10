@@ -416,6 +416,23 @@ Windows Terminal 从 Microsoft Store 安装，并成为默认终端（`scripts/0
 </details>
 
 <details>
+<summary><b>🛡 ShellGuard</b>：资源管理器卡死后自动恢复（可选）</summary>
+
+<br>
+
+**发生了什么。** 有时 `explorer.exe` 会卡死，Windows 将其关闭并重新启动（日志中会出现“Application Hang”和“Shell 意外终止”）。所有依附于旧资源管理器的东西都会“失去归属”：TaskbarX 丢失任务栏的居中和透明效果（还可能空转占用 CPU），Lively 丢失桌面背景窗口（`WorkerW`），动态壁纸消失，只剩静态壁纸。
+
+**工作原理。** `configs/ShellGuard.ps1` 每 5 秒比较资源管理器与 TaskbarX、Lively 的启动时间。如果后两者比资源管理器更早启动，守护程序会等待 10 秒，重启 TaskbarX 并完全重启 Lively（在 Lively 2.x 的这种状态下，用 `setwp` 重新应用壁纸无效）。每 90 秒最多一次，所有操作记录在 `C:\ShellGuard\guard.log` 中。
+
+**安装。** `scripts/17-shell-guard.ps1`（不包含在 `Install-Auto.ps1` 中，按需安装）：将脚本复制到 `C:\ShellGuard`，添加自启动快捷方式，并在隐藏窗口中启动。
+
+- 不做任何更改地查看状态：`powershell -File C:\ShellGuard\ShellGuard.ps1 -Check`；
+- 强制修复：`-RepairNow`。
+
+**注意事项：** 约 40 MB 内存，CPU 约 0 %；回滚：`scripts/99-rollback.ps1`。它处理的是后果，而不是卡死的原因：如果资源管理器经常卡死，请尝试禁用可选扩展（AcrylicMenus、ExplorerBlurMica）。
+
+</details>
+<details>
 <summary><b>🎨 壁纸</b>：深色 4K 渐变</summary>
 
 <br>
@@ -559,7 +576,7 @@ TaskbarX 的启动参数中残留了 `-dtbsowm=1`。删除它：正确的参数�
   </thead>
   <tbody>
     <tr><td><a href="docs/AGENT_PLAYBOOK.md"><code>docs/AGENT_PLAYBOOK.md</code></a></td><td>带有 <code>AUTO</code> / <code>MANUAL</code> / <code>VERIFY</code> / <code>ROLLBACK</code> / <code>WARN</code> 标签的分步说明（俄语）</td></tr>
-    <tr><td><code>scripts/</code></td><td>分步脚本 <code>00</code>…<code>16</code>，回滚脚本 <code>99-rollback.ps1</code>，一键安装脚本 <code>Install-Auto.ps1</code></td></tr>
+    <tr><td><code>scripts/</code></td><td>分步脚本 <code>00</code>…<code>17</code>，回滚脚本 <code>99-rollback.ps1</code>，一键安装脚本 <code>Install-Auto.ps1</code></td></tr>
     <tr><td><code>scripts/Test-Setup.ps1</code></td><td>验证安装结果（每项 OK / FAIL）</td></tr>
     <tr><td><code>configs/</code></td><td>现成的配置：Windows Terminal、PowerShell 配置文件、DWMBlurGlass、ExplorerBlurMica、Lively 动态壁纸</td></tr>
     <tr><td><code>screenshots/</code></td><td>前后对比截图、演示 gif</td></tr>

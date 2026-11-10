@@ -2,6 +2,11 @@
 
 Формат основан на [Keep a Changelog](https://keepachangelog.com/ru/1.1.0/), версии по [SemVer](https://semver.org/lang/ru/).
 
+## [Unreleased]
+
+### Добавлено
+- ShellGuard (`scripts/17-shell-guard.ps1`, по желанию): сам перезапускает TaskbarX и Lively после зависания и перезапуска Проводника.
+
 ## [1.2.0] - 2026-11-09
 
 ### Добавлено
