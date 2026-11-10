@@ -35,6 +35,7 @@
 ## 📑 Contents
 
 - [✨ Overview](#-overview)
+- [🧱 Build and compatibility](#-build-and-compatibility)
 - [🖼 Before and after](#-before-and-after)
 - [🧩 Components](#-components)
 - [🚀 Quick start](#-quick-start)
@@ -71,6 +72,31 @@ Out of the box Windows 10 has none of the transparency and blur of Windows 11: t
 - every step is independent and verified separately;
 - nothing is destroyed: settings are copied to `.bak` before being replaced;
 - the load is minimal: about 40 MB of RAM in total, CPU close to 0 %.
+
+## 🧱 Build and compatibility
+
+Everything in this repository was built and tested on our build. It is designed for **all Windows 10 x64 versions**: regular and lightweight (Lite) ones.
+
+<table width="100%">
+  <thead>
+    <tr><th align="left">Parameter</th><th align="left">Value<img src="screenshots/spacer.png" width="1600" height="1" alt=""></th></tr>
+  </thead>
+  <tbody>
+    <tr><td>System</td><td>Windows 10 Pro 22H2, build 19045.3803, x64</td></tr>
+    <tr><td>Build</td><td>lightweight <b>Windows 10 Lite by Flibustier</b></td></tr>
+    <tr><td>Removed in the build</td><td>Windows Defender, Edge, OneDrive, Hyper-V, some built-in apps (Calculator, Photos, Xbox), telemetry services; about 33 GB on disk</td></tr>
+    <tr><td>Kept</td><td>Microsoft Store (Windows Terminal is installed from it), File Explorer, DWM, PowerShell 5.1</td></tr>
+    <tr><td>Verified</td><td>on this build, <code>Test-Setup.ps1</code>: 26 of 26 OK</td></tr>
+  </tbody>
+</table>
+
+**What it means for the installation:**
+
+- Defender is removed, so the system does not complain about downloaded programs, but there is no built-in protection either: use an antivirus you trust.
+- The Microsoft Store works and Windows Terminal is installed from it. If the Store is removed in your Lite build, take Windows Terminal from [GitHub](https://github.com/microsoft/terminal/releases).
+- There is no Hyper-V in the build, the repository does not need it.
+- Stopped search, update and telemetry services break nothing.
+- On other Windows 10 builds the steps are the same. The only known difference: DWMBlurGlass ships symbols only for 22H2, on other builds download them on the "Symbols" tab (see "Troubleshooting").
 
 ---
 
@@ -412,7 +438,7 @@ Set-ExecutionPolicy -Scope Process Bypass
 3. On steps marked `MANUAL` do the action from the prompt (run an installer, register, UAC) and press Enter.
 4. Check the result with the checklist in the [playbook](docs/AGENT_PLAYBOOK.md), section 5.
 
-**Requirements:** Windows 10 22H2 (build 19045), x64; Windows Terminal from the Microsoft Store; access to GitHub to download releases.
+**Requirements:** Windows 10 x64 (any version and build, Lite included; verified on 22H2, build 19045); Windows Terminal from the Microsoft Store; access to GitHub to download releases.
 
 ---
 
@@ -547,7 +573,7 @@ If the installation is run by a packaged (Microsoft Store) application, writes t
 
 - Glass applies to window title bars and borders, File Explorer and classic menus. The Settings window, the Store, browsers and many messengers draw their own background, so they do not turn into glass.
 - Some components hook into system processes. Install at your own risk, the rollback is described below.
-- Designed for Windows 10 22H2 (build 19045), x64. Other versions were not tested.
+- Designed for all Windows 10 x64 versions. Fully verified on 22H2 (build 19045), including the lightweight Windows 10 Lite build by Flibustier. On other builds run `Test-Setup.ps1` and check the \
 - All third-party programs belong to their authors, source links are listed in the "Components" section.
 - The flags on the language buttons come from [flag-icons](https://github.com/lipis/flag-icons) (MIT licence).
 

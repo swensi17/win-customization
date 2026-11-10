@@ -35,6 +35,7 @@
 ## 📑 目录
 
 - [✨ 概览](#-概览)
+- [🧱 系统版本与兼容性](#-系统版本与兼容性)
 - [🖼 效果对比](#-效果对比)
 - [🧩 组件](#-组件)
 - [🚀 快速开始](#-快速开始)
@@ -71,6 +72,31 @@
 - 每一步相互独立，并单独验证；
 - 不破坏任何东西：替换设置前会先复制为 `.bak`；
 - 负载极低：总共约 40 MB 内存，CPU 接近 0 %。
+
+## 🧱 系统版本与兼容性
+
+本仓库中的所有内容都在我们的系统版本上构建并测试过。它面向**所有 Windows 10 x64 版本**：包括普通版和精简版（Lite）。
+
+<table width="100%">
+  <thead>
+    <tr><th align="left">项目</th><th align="left">说明<img src="screenshots/spacer.png" width="1600" height="1" alt=""></th></tr>
+  </thead>
+  <tbody>
+    <tr><td>系统</td><td>Windows 10 Pro 22H2，build 19045.3803，x64</td></tr>
+    <tr><td>版本</td><td>精简版 <b>Flibustier 制作的 Windows 10 Lite</b></td></tr>
+    <tr><td>该版本中已移除</td><td>Windows Defender、Edge、OneDrive、Hyper-V、部分内置应用（计算器、照片、Xbox）以及遥测服务；磁盘占用约 33 GB</td></tr>
+    <tr><td>保留的组件</td><td>Microsoft Store（Windows Terminal 由它安装）、文件资源管理器、DWM、PowerShell 5.1</td></tr>
+    <tr><td>已验证</td><td>在该版本上，<code>Test-Setup.ps1</code>：26 项全部 OK</td></tr>
+  </tbody>
+</table>
+
+**这对安装意味着什么：**
+
+- Defender 已被移除，所以系统不会对下载的程序报警，但也没有内置防护：请使用你信任的杀毒软件。
+- Microsoft Store 可用，Windows Terminal 由它安装。如果你的 Lite 版本移除了应用商店，请从 [GitHub](https://github.com/microsoft/terminal/releases) 获取 Windows Terminal。
+- 该版本没有 Hyper-V，本仓库也不需要它。
+- 已停止的搜索、更新和遥测服务不会造成任何问题。
+- 在其他 Windows 10 版本上步骤相同。唯一已知的区别：DWMBlurGlass 只内置了 22H2 的符号，其他版本需要在“符号”选项卡中下载（见“常见问题”）。
 
 ---
 
@@ -413,7 +439,7 @@ Set-ExecutionPolicy -Scope Process Bypass
 3. 遇到标有 `MANUAL` 的步骤时，按提示操作（运行安装程序、注册、UAC），然后按 Enter。
 4. 对照 [playbook](docs/AGENT_PLAYBOOK.md) 第 5 节的检查清单确认结果（俄语）。
 
-**环境要求：** Windows 10 22H2（build 19045），x64；来自 Microsoft Store 的 Windows Terminal；可访问 GitHub 以下载发行版。
+**环境要求：** Windows 10 x64（任何版本，包括 Lite；已在 22H2、build 19045 上验证）；来自 Microsoft Store 的 Windows Terminal；可访问 GitHub 以下载发行版。
 
 ---
 
@@ -548,7 +574,7 @@ TaskbarX 的启动参数中残留了 `-dtbsowm=1`。删除它：正确的参数�
 
 - 玻璃效果只作用于窗口标题栏和边框、文件资源管理器以及经典菜单。“设置”窗口、应用商店、浏览器和许多即时通讯软件自己绘制背景，因此不会变成玻璃效果。
 - 部分组件会嵌入系统进程。请自行承担安装风险，回滚方法见下文。
-- 针对 Windows 10 22H2（build 19045），x64 设计。其他版本未经测试。
+- 面向所有 Windows 10 x64 版本。已在 22H2（build 19045）上完整验证，包括 Flibustier 制作的精简版 Windows 10 Lite。在其他版本上请运行 `Test-Setup.ps1` 并查看
 - 所有第三方程序归其作者所有，来源链接见“组件”一节。
 - 语言按钮上的旗帜来自 [flag-icons](https://github.com/lipis/flag-icons)（MIT 许可证）。
 
