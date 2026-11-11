@@ -448,10 +448,25 @@ Windows Terminal ставится из Microsoft Store и становится �
 **Одной командой** (PowerShell; права администратора запросит сам, недостающее скачает, поставит всё по порядку и в конце напечатает итог и проверку):
 
 ```powershell
-irm https://raw.githubusercontent.com/swensi17/win-customization/main/Install.ps1 | iex
+[Net.ServicePointManager]::SecurityProtocol = 'Tls12'; irm https://raw.githubusercontent.com/swensi17/win-customization/main/Install.ps1 | iex
 ```
 
-Вручную остаётся один шаг: кнопка «Установить» в окне DWMBlurGlass. Журнал: `%TEMP%\win-customization-install.log`.
+Из cmd или окна «Выполнить» (Win+R):
+
+```bat
+powershell -NoProfile -ExecutionPolicy Bypass -Command "[Net.ServicePointManager]::SecurityProtocol='Tls12'; irm https://raw.githubusercontent.com/swensi17/win-customization/main/Install.ps1 | iex"
+```
+
+Что установщик делает сам:
+
+- переходит в 64-битный Windows PowerShell 5.1, если запущен из pwsh или 32-битной оболочки;
+- просит права администратора и проверяет, что это тот же пользователь, что сидит за ПК;
+- ставит недостающие Visual C++ x64, WebView2 и Windows Terminal (если установка приложений вырезана из системы, ставит портативную версию);
+- качает с повтором и запасными путями (curl, BITS, обход лимита GitHub API), сверяет подписи и SHA-256 установщиков;
+- программы трея запускает без прав администратора, как при обычном входе в Windows;
+- при ошибке одного шага продолжает, в конце печатает итог и самопроверку.
+
+Повторный запуск безопасен. Повторить только отдельные шаги: `.\scripts\Install-Auto.ps1 -Only 09,16`. Вручную остаётся один шаг и только при первой установке: кнопка «Установить» в окне DWMBlurGlass. Журнал: `%TEMP%\win-customization-install.log`.
 
 Или по шагам:
 

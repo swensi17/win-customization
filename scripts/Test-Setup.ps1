@@ -14,10 +14,15 @@ function Check([string]$name, [scriptblock]$test, [switch]$Optional) {
   else             { Write-Host ("[FAIL] " + $name) -ForegroundColor Red; $script:fail++ }
 }
 function Reg($path, $name) { (Get-ItemProperty -LiteralPath $path -ErrorAction Stop).$name }
+$ps51Profile = Join-Path ([Environment]::GetFolderPath('MyDocuments')) 'WindowsPowerShell\Microsoft.PowerShell_profile.ps1'
+$win11 = [int](Get-CimInstance Win32_OperatingSystem).BuildNumber -ge 22000
+# настройки терминала: установленное приложение или портативная версия в C:\WindowsTerminal (шаг 09)
+$wtPkg = [bool](Get-AppxPackage Microsoft.WindowsTerminal* -ErrorAction SilentlyContinue)
+$wtSettings = if ($wtPkg) { Join-Path $LocalAppData 'Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json' } else { 'C:\WindowsTerminal\settings\settings.json' }
 
 Write-Host "`n== Панель задач и трей ==" -ForegroundColor Cyan
-Check "TaskbarX запущен"                               { Get-Process TaskbarX -ErrorAction Stop }
-Check "TaskbarX в автозагрузке (ярлык в Startup)"      { Test-Path (Join-Path ([Environment]::GetFolderPath('Startup')) 'TaskbarX.lnk') }
+Check "TaskbarX запущен"                               { Get-Process TaskbarX -ErrorAction Stop } -Optional:$win11
+Check "TaskbarX в автозагрузке (ярлык в Startup)"      { Test-Path (Join-Path ([Environment]::GetFolderPath('Startup')) 'TaskbarX.lnk') } -Optional:$win11
 Check "Трей свёрнут (EnableAutoTray = 1)"              { (Reg 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer' 'EnableAutoTray') -eq 1 }
 Check "«Новости» выключены (ShellFeedsTaskbarViewMode = 2)" { (Reg 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Feeds' 'ShellFeedsTaskbarViewMode') -eq 2 }
 
@@ -34,12 +39,12 @@ Check "Пункт «Закрыть зависшие программы»"       
 Check "Пункт «Диспетчер задач»"                        { Test-Path 'HKCU:\Software\Classes\Directory\Background\shell\TaskMgr\command' }
 
 Write-Host "`n== Терминал и PowerShell ==" -ForegroundColor Cyan
-Check "Windows Terminal установлен"                    { Get-AppxPackage Microsoft.WindowsTerminal* -ErrorAction Stop }
-Check "Терминал по умолчанию = Windows Terminal"       { (Reg 'HKCU:\Console\%%Startup' 'DelegationTerminal') -eq '{E12CFF52-A866-4C77-9A90-F570A7AA2C6B}' }
-Check "Настройки терминала: схема «Arch Glass»"        { (Get-Content (Join-Path $LocalAppData 'Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json') -Raw) -match 'Arch Glass' }
-Check "Профиль PowerShell установлен"                  { (Get-Content $PROFILE.CurrentUserCurrentHost -Raw -ErrorAction Stop) -match 'splash' }
-Check "Заставка Show-Splash.ps1 рядом с профилем"      { Test-Path (Join-Path (Split-Path $PROFILE.CurrentUserCurrentHost) 'Show-Splash.ps1') }
-Check "cmd оформлен (AutoRun указывает на cmd-autorun.cmd)" { ((Get-ItemProperty 'HKCU:\Software\Microsoft\Command Processor' -ErrorAction Stop).AutoRun -match 'cmd-autorun\.cmd') -and (Test-Path (Join-Path (Split-Path $PROFILE.CurrentUserCurrentHost) 'cmd-autorun.cmd')) }
+Check "Windows Terminal установлен"                    { $wtPkg -or (Test-Path 'C:\WindowsTerminal\WindowsTerminal.exe') }
+Check "Терминал по умолчанию = Windows Terminal"       { (Reg 'HKCU:\Console\%%Startup' 'DelegationTerminal') -eq '{E12CFF52-A866-4C77-9A90-F570A7AA2C6B}' } -Optional:(-not $wtPkg)
+Check "Настройки терминала: схема «Arch Glass»"        { (Get-Content $wtSettings -Raw) -match 'Arch Glass' }
+Check "Профиль PowerShell установлен"                  { (Get-Content $ps51Profile -Raw -ErrorAction Stop) -match 'splash' }
+Check "Заставка Show-Splash.ps1 рядом с профилем"      { Test-Path (Join-Path (Split-Path $ps51Profile) 'Show-Splash.ps1') }
+Check "cmd оформлен (AutoRun указывает на cmd-autorun.cmd)" { ((Get-ItemProperty 'HKCU:\Software\Microsoft\Command Processor' -ErrorAction Stop).AutoRun -match 'cmd-autorun\.cmd') -and (Test-Path (Join-Path (Split-Path $ps51Profile) 'cmd-autorun.cmd')) }
 
 Write-Host "`n== Индикатор нагрузки ==" -ForegroundColor Cyan
 Check "SysMonTray запущен"                             { Get-CimInstance Win32_Process -Filter "Name='powershell.exe'" | Where-Object { $_.CommandLine -match 'SysMonTray' } | Select-Object -First 1 }
@@ -48,8 +53,8 @@ Check "ShellGuard запущен (чинит оформление после з�
 Check "ShellGuard в автозагрузке (ярлык в Startup)"     { Test-Path (Join-Path ([Environment]::GetFolderPath('Startup')) 'ShellGuard.lnk') } -Optional
 Write-Host "`n== Шрифт, тема, Quake, обои ==" -ForegroundColor Cyan
 Check "Nerd Font установлен (JetBrainsMono NF)"        { Add-Type -AssemblyName System.Drawing; ((New-Object System.Drawing.Text.InstalledFontCollection).Families | Where-Object Name -match 'JetBrainsMono NF') }
-Check "Терминал использует Nerd Font"                  { (Get-Content (Join-Path $LocalAppData 'Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json') -Raw) -match 'JetBrainsMono Nerd Font' }
-Check "Quake-режим: Win + ~ (quakeMode)"               { (Get-Content (Join-Path $LocalAppData 'Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json') -Raw) -match 'quakeMode' }
+Check "Терминал использует Nerd Font"                  { (Get-Content $wtSettings -Raw) -match 'JetBrainsMono Nerd Font' }
+Check "Quake-режим: Win + ~ (quakeMode)"               { (Get-Content $wtSettings -Raw) -match 'quakeMode' }
 Check "Тёмная тема Windows и приложений"               { $p = Get-ItemProperty 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize'; $p.AppsUseLightTheme -eq 0 -and $p.SystemUsesLightTheme -eq 0 }
 Check "Акцентный цвет #1793D1"                         { ('{0:X8}' -f (Get-ItemProperty 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Accent').AccentColorMenu) -eq 'FFD19317' }
 Check "Пакет живых обоев Aurora Glass"                 { Test-Path 'C:\LivelyWallpapers\aurora-glass.zip' } -Optional

@@ -1,4 +1,5 @@
 ﻿# [AUTO] Тёмная тема Windows и приложений + акцентный цвет #1793D1 (тот же голубой, что в терминале). Только HKCU.
+. "$PSScriptRoot\lib\Common.ps1"
 $acc = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Accent"; $dwm = "HKCU:\Software\Microsoft\Windows\DWM"
 $pz  = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize"
 # бэкап текущих значений
@@ -12,13 +13,13 @@ New-Item -Path $acc -Force | Out-Null
 Set-ItemProperty $acc -Name AccentPalette   -Value $pal -Type Binary
 Set-ItemProperty $acc -Name AccentColorMenu -Value ([Convert]::ToInt32('FFD19317',16)) -Type DWord   # ABGR
 Set-ItemProperty $acc -Name StartColorMenu  -Value ([Convert]::ToInt32('FF7D580E',16)) -Type DWord
-Set-ItemProperty $dwm -Name AccentColor           -Value ([Convert]::ToInt32('FFD19317',16)) -Type DWord
-Set-ItemProperty $dwm -Name ColorizationColor     -Value ([Convert]::ToInt32('C41793D1',16)) -Type DWord
-Set-ItemProperty $dwm -Name ColorizationAfterglow -Value ([Convert]::ToInt32('C41793D1',16)) -Type DWord
-Set-ItemProperty $dwm -Name ColorPrevalence -Value 0 -Type DWord      # заголовки не красить: там стекло DWMBlurGlass
-Set-ItemProperty $pz -Name AppsUseLightTheme -Value 0 -Type DWord
-Set-ItemProperty $pz -Name SystemUsesLightTheme -Value 0 -Type DWord
-Set-ItemProperty $pz -Name EnableTransparency -Value 1 -Type DWord
+Set-Reg $dwm AccentColor ([Convert]::ToInt32('FFD19317',16))
+Set-Reg $dwm ColorizationColor ([Convert]::ToInt32('C41793D1',16))
+Set-Reg $dwm ColorizationAfterglow ([Convert]::ToInt32('C41793D1',16))
+Set-Reg $dwm ColorPrevalence 0      # заголовки не красить: там стекло DWMBlurGlass
+Set-Reg $pz AppsUseLightTheme 0
+Set-Reg $pz SystemUsesLightTheme 0
+Set-Reg $pz EnableTransparency 1
 Add-Type @"
 using System; using System.Runtime.InteropServices;
 public static class ThemeBc { [DllImport("user32.dll", CharSet=CharSet.Unicode)] public static extern IntPtr SendMessageTimeout(IntPtr h, uint m, UIntPtr w, string l, uint f, uint t, out UIntPtr r); }
