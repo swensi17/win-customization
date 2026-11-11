@@ -424,7 +424,7 @@ Windows Terminal ставится из Microsoft Store и становится �
 
 **Как работает.** `configs/ShellGuard.ps1` каждые 5 секунд сравнивает время запуска Проводника со временем запуска TaskbarX и Lively. Если они старше Проводника, страж ждёт 10 секунд, перезапускает TaskbarX и полностью перезапускает Lively (повторное применение обоев командой `setwp` в Lively 2.x в таком состоянии не срабатывает). Не чаще одного раза в 90 секунд, всё записывается в `C:\ShellGuard\guard.log`.
 
-**Установка.** `scripts/17-shell-guard.ps1` (в `Install-Auto.ps1` не входит, ставится по желанию): копирует скрипт в `C:\ShellGuard`, добавляет ярлык в автозагрузку и запускает скрытым окном.
+**Установка.** `scripts/17-shell-guard.ps1` (входит в `Install-Auto.ps1`): копирует скрипт в `C:\ShellGuard`, добавляет ярлык в автозагрузку и запускает скрытым окном.
 
 - состояние без изменений: `powershell -File C:\ShellGuard\ShellGuard.ps1 -Check`;
 - принудительный ремонт: `-RepairNow`.
@@ -444,6 +444,16 @@ Windows Terminal ставится из Microsoft Store и становится �
 ---
 
 ## 🚀 Быстрый старт
+
+**Одной командой** (PowerShell; права администратора запросит сам, недостающее скачает, поставит всё по порядку и в конце напечатает итог и проверку):
+
+```powershell
+irm https://raw.githubusercontent.com/swensi17/win-customization/main/Install.ps1 | iex
+```
+
+Вручную остаётся один шаг: кнопка «Установить» в окне DWMBlurGlass. Журнал: `%TEMP%\win-customization-install.log`.
+
+Или по шагам:
 
 1. Скачать репозиторий и распаковать, например, в `C:\win-customization`.
 2. Открыть PowerShell в папке `scripts`:
