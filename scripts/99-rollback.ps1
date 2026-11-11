@@ -24,5 +24,10 @@ Remove-ItemProperty "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\St
 Get-CimInstance Win32_Process -Filter "Name='powershell.exe'" | Where-Object { $_.CommandLine -match 'ShellGuard\.ps1' } | ForEach-Object { Stop-Process -Id $_.ProcessId -Force }
 Remove-Item "$([Environment]::GetFolderPath('Startup'))\ShellGuard.lnk" -ErrorAction SilentlyContinue
 Remove-Item "C:\ShellGuard" -Recurse -Force -ErrorAction SilentlyContinue
+# PowerToys (MSI для пользователя; настройки в %LOCALAPPDATA%\Microsoft\PowerToys остаются)
+Get-Process PowerToys* -ErrorAction SilentlyContinue | Stop-Process -Force
+Get-ChildItem 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Uninstall', 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall' -ErrorAction SilentlyContinue |
+    Where-Object { (Get-ItemProperty $_.PSPath).DisplayName -like 'PowerToys*' -and $_.PSChildName -match '^\{.+\}$' } |
+    ForEach-Object { Start-Process msiexec -ArgumentList '/x', $_.PSChildName, '/qn', '/norestart' -Wait }
 Write-Host "Вручную: DWMBlurGlass -> 'Удалить'; C:\ExplorerBlurMica\Release\uninstall.cmd; C:\AcrylicMenus\Installer\Uninstall.cmd; 7+ Taskbar Tweaker -> деинсталлятор; затем удали папки в C:\." -ForegroundColor Yellow
 Stop-Process -Name explorer -Force

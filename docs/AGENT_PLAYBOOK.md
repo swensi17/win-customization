@@ -255,6 +255,13 @@
 - `[VERIFY]` `powershell -File C:\ShellGuard\ShellGuard.ps1 -Check` показывает `устарели : False`; `-RepairNow` перезапускает TaskbarX и Lively, строки видны в `guard.log` и в журнале Lively (`Setting wallpaper`).
 - `[ROLLBACK]` `99-rollback.ps1` (останавливает страж, удаляет ярлык и папку `C:\ShellGuard`).
 
+### Шаг 18. PowerToys `[AUTO]`
+`scripts\18-powertoys.ps1` скачивает `PowerToysUserSetup-*-x64.exe` из релизов `microsoft/PowerToys`, проверяет подпись Microsoft и ставит тихо для пользователя в `%LOCALAPPDATA%\PowerToys`, затем запускает без прав администратора.
+- `[WARN]` Установщик около 320 МБ, кэшируется в `%TEMP%\win-customization`.
+- `[WARN]` На Lite-сборке бандл падает с `0x80070003`: служба MSI не открывает файл из `%LOCALAPPDATA%\Package Cache` (ошибка 2203). Скрипт копирует MSI, пока бандл его распаковывает, и ставит его через `msiexec /i ... /qn`.
+- `[VERIFY]` процесс `PowerToys` запущен, есть `%LOCALAPPDATA%\PowerToys\PowerToys.exe`, `Alt + Space` открывает поиск.
+- `[ROLLBACK]` `99-rollback.ps1` (`msiexec /x` по коду продукта PowerToys из реестра).
+
 ## 4. Грабли и ограничения
 
 1. **Виртуализация AppData у упакованных (MSIX) агентов.** Если исполнитель запущен из Store-приложения, запись в `%LOCALAPPDATA%` и `%APPDATA%` попадает в `...\Packages\<Приложение>\LocalCache\...`, и Проводник пользователя этих файлов не видит. Симптомы: «Расположение недоступно», ярлык автозагрузки не срабатывает после перезагрузки. Решение: программы в `C:\...`, ярлык автозагрузки писать по реальному пути `...\Roaming\Microsoft\Windows\Start Menu\Programs\Startup`, шаги выполнять с отключённой изоляцией песочницы.
