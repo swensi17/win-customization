@@ -424,7 +424,7 @@ Windows Terminal 从 Microsoft Store 安装，并成为默认终端（`scripts/0
 
 **工作原理。** `configs/ShellGuard.ps1` 每 5 秒比较资源管理器与 TaskbarX、Lively 的启动时间。如果后两者比资源管理器更早启动，守护程序会等待 10 秒，重启 TaskbarX 并完全重启 Lively（在 Lively 2.x 的这种状态下，用 `setwp` 重新应用壁纸无效）。每 90 秒最多一次，所有操作记录在 `C:\ShellGuard\guard.log` 中。
 
-**安装。** `scripts/17-shell-guard.ps1`（不包含在 `Install-Auto.ps1` 中，按需安装）：将脚本复制到 `C:\ShellGuard`，添加自启动快捷方式，并在隐藏窗口中启动。
+**安装。** `scripts/17-shell-guard.ps1`（包含在 `Install-Auto.ps1` 中）：将脚本复制到 `C:\ShellGuard`，添加自启动快捷方式，并在隐藏窗口中启动。
 
 - 不做任何更改地查看状态：`powershell -File C:\ShellGuard\ShellGuard.ps1 -Check`；
 - 强制修复：`-RepairNow`。
@@ -444,6 +444,16 @@ Windows Terminal 从 Microsoft Store 安装，并成为默认终端（`scripts/0
 ---
 
 ## 🚀 快速开始
+
+**一条命令**（PowerShell；会自动请求管理员权限、下载缺失的组件、按顺序安装并在最后输出汇总与自检）：
+
+```powershell
+irm https://raw.githubusercontent.com/swensi17/win-customization/main/Install.ps1 | iex
+```
+
+只有一步需要手动：在 DWMBlurGlass 窗口中点击“安装”。日志：`%TEMP%\win-customization-install.log`。
+
+或分步安装：
 
 1. 下载本仓库并解压，例如解压到 `C:\win-customization`。
 2. 在 `scripts` 文件夹中打开 PowerShell：

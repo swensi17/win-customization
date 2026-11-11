@@ -423,7 +423,7 @@ My own web wallpaper (`configs/lively/aurora-glass/`): four large radial gradien
 
 **How it works.** `configs/ShellGuard.ps1` compares the Explorer start time with the TaskbarX and Lively start times every 5 seconds. If they are older than Explorer, the guard waits 10 seconds, restarts TaskbarX and fully restarts Lively (re-applying the wallpaper with `setwp` does not work in Lively 2.x in this state). At most once per 90 seconds, everything is logged to `C:\ShellGuard\guard.log`.
 
-**Installation.** `scripts/17-shell-guard.ps1` (not part of `Install-Auto.ps1`, installed on demand): copies the script to `C:\ShellGuard`, adds an autostart shortcut and starts it in a hidden window.
+**Installation.** `scripts/17-shell-guard.ps1` (part of `Install-Auto.ps1`): copies the script to `C:\ShellGuard`, adds an autostart shortcut and starts it in a hidden window.
 
 - state without changes: `powershell -File C:\ShellGuard\ShellGuard.ps1 -Check`;
 - force a repair: `-RepairNow`.
@@ -443,6 +443,16 @@ My own web wallpaper (`configs/lively/aurora-glass/`): four large radial gradien
 ---
 
 ## 🚀 Quick start
+
+**One command** (PowerShell; it asks for administrator rights, downloads what is missing, installs everything in order and prints a summary and self-check at the end):
+
+```powershell
+irm https://raw.githubusercontent.com/swensi17/win-customization/main/Install.ps1 | iex
+```
+
+Only one step stays manual: the Install button in the DWMBlurGlass window. Log: `%TEMP%\win-customization-install.log`.
+
+Or step by step:
 
 1. Download the repository and unpack it, for example to `C:\win-customization`.
 2. Open PowerShell in the `scripts` folder:
