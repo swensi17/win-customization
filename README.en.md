@@ -432,6 +432,20 @@ My own web wallpaper (`configs/lively/aurora-glass/`): four large radial gradien
 
 </details>
 <details>
+<summary><b>🧰 PowerToys</b>: search, window zones and small utilities from Microsoft</summary>
+
+<br>
+
+**What it does.** Microsoft's utility set: search and launch apps, files and commands with `Alt + Space`, window zones (`Win + Shift + ~`), always on top (`Win + Ctrl + T`), color picker (`Win + Shift + C`), text from screen (`Win + Shift + T`), bulk rename from the context menu.
+
+**Installation.** `scripts/18-powertoys.ps1` (part of `Install-Auto.ps1`): takes the latest `PowerToysUserSetup-x64.exe` from GitHub releases, checks the Microsoft signature and installs silently for the current user to `%LOCALAPPDATA%\PowerToys`. If PowerToys is already installed, the step only starts it; to update: `-Force`.
+
+**Settings.** Settings window: right click on the tray icon. PowerToys enables its own autostart. Turn off modules you do not use, each one keeps its own process.
+
+**Pitfalls:** the installer is about 320 MB. On Lite builds Windows Installer cannot open the MSI from `AppData\Local\Package Cache` (error 2203, `0x80070003`), so the script grabs the MSI and installs it itself with `msiexec`. Rollback: `scripts/99-rollback.ps1` (uninstalls with `msiexec /x`, settings in `%LOCALAPPDATA%\Microsoft\PowerToys` stay).
+
+</details>
+<details>
 <summary><b>🎨 Wallpapers</b>: dark 4K gradients</summary>
 
 <br>

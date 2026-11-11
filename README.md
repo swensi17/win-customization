@@ -433,6 +433,20 @@ Windows Terminal ставится из Microsoft Store и становится �
 
 </details>
 <details>
+<summary><b>🧰 PowerToys</b>: поиск, зоны окон и мелкие утилиты от Microsoft</summary>
+
+<br>
+
+**Что делает.** Набор утилит Microsoft: поиск и запуск программ, файлов и команд по `Alt + Space`, раскладка окон по зонам (`Win + Shift + ~`), окно поверх остальных (`Win + Ctrl + T`), пипетка цвета (`Win + Shift + C`), текст с экрана (`Win + Shift + T`), массовое переименование файлов из меню ПКМ.
+
+**Установка.** `scripts/18-powertoys.ps1` (входит в `Install-Auto.ps1`): берёт последний `PowerToysUserSetup-x64.exe` из релизов GitHub, проверяет подпись Microsoft и ставит тихо для текущего пользователя в `%LOCALAPPDATA%\PowerToys`. Если PowerToys уже стоит, шаг его только запускает; обновить: `-Force`.
+
+**Настройки.** Окно настроек: ПКМ по значку в трее. Автозапуск PowerToys включает сам. Ненужные модули лучше выключить, каждый держит свой процесс.
+
+**Ловушки:** установщик весит около 320 МБ. На Lite-сборках служба Windows Installer не открывает MSI из `AppData\Local\Package Cache` (ошибка 2203, `0x80070003`), поэтому скрипт перехватывает MSI и ставит его сам через `msiexec`. Откат: `scripts/99-rollback.ps1` (удаляет через `msiexec /x`, настройки в `%LOCALAPPDATA%\Microsoft\PowerToys` остаются).
+
+</details>
+<details>
 <summary><b>🎨 Обои</b>: тёмные градиенты 4K</summary>
 
 <br>
@@ -510,6 +524,7 @@ Set-ExecutionPolicy -Scope Process Bypass
     <tr><td>15</td><td>обзор и чистка автозагрузки</td><td><code>AUTO</code></td></tr>
     <tr><td>16</td><td>живые обои Aurora Glass (Lively)</td><td><code>AUTO</code> + <code>MANUAL</code></td></tr>
     <tr><td>17</td><td>ShellGuard: автовосстановление после зависания Проводника (по желанию)</td><td><code>AUTO</code></td></tr>
+    <tr><td>18</td><td>PowerToys: поиск по Alt + Space, зоны окон, утилиты</td><td><code>AUTO</code></td></tr>
   </tbody>
 </table>
 
