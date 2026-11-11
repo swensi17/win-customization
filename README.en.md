@@ -447,10 +447,25 @@ My own web wallpaper (`configs/lively/aurora-glass/`): four large radial gradien
 **One command** (PowerShell; it asks for administrator rights, downloads what is missing, installs everything in order and prints a summary and self-check at the end):
 
 ```powershell
-irm https://raw.githubusercontent.com/swensi17/win-customization/main/Install.ps1 | iex
+[Net.ServicePointManager]::SecurityProtocol = 'Tls12'; irm https://raw.githubusercontent.com/swensi17/win-customization/main/Install.ps1 | iex
 ```
 
-Only one step stays manual: the Install button in the DWMBlurGlass window. Log: `%TEMP%\win-customization-install.log`.
+From cmd or the Run dialog (Win+R):
+
+```bat
+powershell -NoProfile -ExecutionPolicy Bypass -Command "[Net.ServicePointManager]::SecurityProtocol='Tls12'; irm https://raw.githubusercontent.com/swensi17/win-customization/main/Install.ps1 | iex"
+```
+
+What the installer handles itself:
+
+- switches to 64-bit Windows PowerShell 5.1 when started from pwsh or a 32-bit shell;
+- asks for administrator rights and checks it is the same user who is signed in;
+- installs missing Visual C++ x64, WebView2 and Windows Terminal (a portable build when app installation is stripped from the system);
+- downloads with retries and fallbacks (curl, BITS, a way around the GitHub API limit) and verifies installer signatures and SHA-256;
+- starts tray apps without administrator rights, as on a normal sign-in;
+- keeps going when one step fails and prints a summary and self-check at the end.
+
+Re-running is safe. To repeat single steps: `.\scripts\Install-Auto.ps1 -Only 09,16`. Only one step stays manual, and only on the first install: the Install button in the DWMBlurGlass window. Log: `%TEMP%\win-customization-install.log`.
 
 Or step by step:
 

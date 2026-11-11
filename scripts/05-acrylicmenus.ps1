@@ -1,16 +1,22 @@
-﻿# [AUTO + MANUAL] AcrylicMenus: акрил для классических контекстных меню (ПКМ).
+﻿# [AUTO] AcrylicMenus: акрил для классических контекстных меню (ПКМ).
+# -Auto повторяет Installer\Install.cmd (для текущего пользователя), но запускает загрузчик без прав администратора.
 param([switch]$Auto)
+. "$PSScriptRoot\lib\Common.ps1"
 $ver = "v1.0.8"; $dst = "C:\AcrylicMenus"
-New-Item -ItemType Directory -Force $dst | Out-Null
-$zip = Join-Path $env:TEMP "acrylicmenus.zip"
-Invoke-WebRequest "https://github.com/krlvm/AcrylicMenus/releases/download/$ver/AcrylicMenus.zip" -OutFile $zip -UseBasicParsing
-Expand-Archive $zip -DestinationPath $dst -Force
-if ($Auto) {
-  # то же, что Install.cmd (для текущего пользователя); echo. закрывает pause в конце
-  cmd.exe /c "cd /d `"$dst\Installer`" && echo.| Install.cmd" | Out-Null
-  Start-Sleep 2
-  if (-not (Get-Process AcrylicMenusLoader -ErrorAction SilentlyContinue)) { throw "AcrylicMenusLoader не запустился" }
-  "AcrylicMenus OK"; return
+$zip = Get-File "https://github.com/krlvm/AcrylicMenus/releases/download/$ver/AcrylicMenus.zip" "AcrylicMenus_$ver.zip" -Zip
+Expand-Zip $zip $dst
+if (-not $Auto) {
+  Write-Host "`n[MANUAL] Запусти $dst\Installer\Install.cmd (НЕ InstallAllUsers). Он копирует в %LOCALAPPDATA%\AcrylicMenus и добавляет автозапуск (HKCU Run)." -ForegroundColor Yellow
+  return
 }
-Write-Host "`n[MANUAL] Запусти C:\AcrylicMenus\Installer\Install.cmd (НЕ InstallAllUsers). Он копирует в %LOCALAPPDATA%\AcrylicMenus и добавляет автозапуск (HKCU Run)." -ForegroundColor Yellow
-Invoke-Item "$dst\Installer"
+$inst = Join-Path $env:LOCALAPPDATA 'AcrylicMenus'
+Get-Process AcrylicMenusLoader -ErrorAction SilentlyContinue | Stop-Process -Force
+Start-Sleep 1
+New-Item -ItemType Directory -Force $inst | Out-Null
+foreach ($f in 'AcrylicMenus.dll', 'AcrylicMenusLoader.exe') {
+  try { Copy-Item "$dst\$f" "$inst\$f" -Force -ErrorAction Stop }
+  catch { if (-not (Test-Path "$inst\$f")) { throw } ; Write-Warning "$f занят, оставляю установленный" }
+}
+Set-Reg 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Run' 'AcrylicMenus' "$inst\AcrylicMenusLoader.exe" 'String'
+Start-UserProcess "$inst\AcrylicMenusLoader.exe"
+if (Wait-ProcessUp AcrylicMenusLoader 10) { "AcrylicMenus OK" } else { throw "AcrylicMenusLoader не запустился" }

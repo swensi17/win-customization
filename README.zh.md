@@ -448,10 +448,25 @@ Windows Terminal 从 Microsoft Store 安装，并成为默认终端（`scripts/0
 **一条命令**（PowerShell；会自动请求管理员权限、下载缺失的组件、按顺序安装并在最后输出汇总与自检）：
 
 ```powershell
-irm https://raw.githubusercontent.com/swensi17/win-customization/main/Install.ps1 | iex
+[Net.ServicePointManager]::SecurityProtocol = 'Tls12'; irm https://raw.githubusercontent.com/swensi17/win-customization/main/Install.ps1 | iex
 ```
 
-只有一步需要手动：在 DWMBlurGlass 窗口中点击“安装”。日志：`%TEMP%\win-customization-install.log`。
+在 cmd 或“运行”（Win+R）中：
+
+```bat
+powershell -NoProfile -ExecutionPolicy Bypass -Command "[Net.ServicePointManager]::SecurityProtocol='Tls12'; irm https://raw.githubusercontent.com/swensi17/win-customization/main/Install.ps1 | iex"
+```
+
+安装器会自动处理：
+
+- 从 pwsh 或 32 位终端启动时切换到 64 位 Windows PowerShell 5.1；
+- 请求管理员权限，并确认与当前登录的用户一致；
+- 安装缺失的 Visual C++ x64、WebView2 和 Windows Terminal（系统无法安装应用时使用便携版）；
+- 带重试与备用通道下载（curl、BITS、绕过 GitHub API 限制），校验安装包签名与 SHA-256；
+- 托盘程序以普通权限启动，与正常登录时相同；
+- 单个步骤失败时继续执行，最后输出汇总与自检。
+
+可以重复运行。只重试某些步骤：`.\scripts\Install-Auto.ps1 -Only 09,16`。只有一步需要手动，且仅在首次安装时：在 DWMBlurGlass 窗口中点击“安装”。日志：`%TEMP%\win-customization-install.log`。
 
 或分步安装：
 

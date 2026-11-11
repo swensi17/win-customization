@@ -77,7 +77,7 @@
 
 ## 3. Порядок выполнения
 
-Быстрый путь: `irm https://raw.githubusercontent.com/swensi17/win-customization/main/Install.ps1 | iex` (или `scripts\Install-Auto.ps1`): сам просит админа, ставит всё по порядку (04, 05, 07, 16 без ручных действий, недостающие Lively и Windows Terminal скачивает), не падает на одной ошибке, в конце печатает итог и запускает Test-Setup. Вручную остаётся только кнопка «Установить» в DWMBlurGlass (WARN: у программы нет командной строки; флаг `-SkipManual` пропускает ожидание). Подробно по шагам:
+Быстрый путь: `irm https://raw.githubusercontent.com/swensi17/win-customization/main/Install.ps1 | iex` (или `scripts\Install-Auto.ps1`): переходит в 64-битный PowerShell 5.1, сам просит админа и сверяет пользователя, ставит Visual C++ x64, WebView2 и Windows Terminal, затем всё по порядку (04, 05, 07, 16 без ручных действий), не падает на одной ошибке, в конце печатает итог и запускает Test-Setup. Общие функции (загрузка с повтором, обход лимита GitHub API, проверка подписи и SHA-256, запуск без админа, перезапуск Проводника) лежат в `scripts\lib\Common.ps1`. Вручную остаётся только кнопка «Установить» в DWMBlurGlass и только при первой установке (WARN: у программы нет командной строки; флаг `-SkipManual` пропускает ожидание). WARN: `Install.ps1` держать только в ASCII и без BOM, иначе `irm | iex` падает; остальные `.ps1` наоборот в UTF-8 с BOM, иначе PowerShell 5.1 портит кириллицу. Подробно по шагам:
 
 ### Шаг 0. Проверка окружения `[AUTO]`
 `scripts\00-prereqs.ps1`
