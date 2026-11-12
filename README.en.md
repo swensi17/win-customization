@@ -446,20 +446,6 @@ My own web wallpaper (`configs/lively/aurora-glass/`): four large radial gradien
 
 </details>
 <details>
-<summary><b>🦅 Windhawk</b>: mod store for the taskbar, tray and menus</summary>
-
-<br>
-
-**What it does.** Injects small mods into Windows processes: taskbar look, clock, tray, Start menu, window behavior. Each mod is turned on and off with one button, no reboot.
-
-**How to use.** Windhawk tray icon, Explore tab: search for a mod, Details, Install. Mod options are on the Settings tab of an installed mod.
-
-**Installation.** `scripts/19-windhawk.ps1` (part of `Install-Auto.ps1`): takes `windhawk_setup.exe` from the `ramensoftware/windhawk` releases, checks the SHA-256 published on GitHub and installs silently (`/S`) to `Program Files\Windhawk`. The script does not install mods, you pick them in the app.
-
-**Pitfalls:** many popular mods say "for the Windows 11 taskbar" (Windows 11 Taskbar Styler, Island Media Controls, Taskbar Dock Animation): they do not work on Windows 10. If Explorer misbehaves after a mod, turn the mod off in Windhawk. Rollback: `scripts/99-rollback.ps1` (`uninstall.exe /S`).
-
-</details>
-<details>
 <summary><b>🎨 Wallpapers</b>: dark 4K gradients</summary>
 
 <br>
