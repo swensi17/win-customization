@@ -446,6 +446,20 @@ My own web wallpaper (`configs/lively/aurora-glass/`): four large radial gradien
 
 </details>
 <details>
+<summary><b>🪟 Open-Shell</b>: Start menu on dark glass</summary>
+
+<br>
+
+**What it does.** Replaces the Windows 10 Start menu with a Windows 7 style menu using the Windows Aero skin: dark blue blurred glass with a shadow, like Explorer with DWMBlurGlass. Search, pinned apps, All Programs as a list.
+
+**Installation.** `scripts/19-open-shell.ps1` (part of `Install-Auto.ps1`, needs admin rights): takes `OpenShellSetup_*.exe` from the `Open-Shell/Open-Shell-Menu` releases, checks the SHA-256 and installs only the Start Menu component (`ADDLOCAL=StartMenu`). Settings go to `HKCU:\Software\OpenShell\StartMenu\Settings`: style `Win7`, skin `Windows Aero`, glass color `#10141C`, opacity 55.
+
+**Settings.** Right click on Start → Settings, Skin tab: skin and glass options. The standard Windows menu: Shift + click on Start.
+
+**Pitfalls:** the glass shows only with transparency effects on (Settings → Personalization → Colors). Rollback: `scripts/99-rollback.ps1` (`msiexec /x` and settings removal).
+
+</details>
+<details>
 <summary><b>🎨 Wallpapers</b>: dark 4K gradients</summary>
 
 <br>
