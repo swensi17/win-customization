@@ -447,6 +447,20 @@ Windows Terminal ставится из Microsoft Store и становится �
 
 </details>
 <details>
+<summary><b>🦅 Windhawk</b>: магазин модов для панели задач, трея и меню</summary>
+
+<br>
+
+**Что делает.** Ставит небольшие моды прямо в процессы Windows: внешний вид панели задач, часы, трей, меню «Пуск», поведение окон. Каждый мод включается и выключается одной кнопкой, без перезагрузки.
+
+**Как пользоваться.** Значок Windhawk в трее, вкладка «Обзор» (Explore): поиск мода, «Подробнее», «Установить». Настройки мода на вкладке «Параметры» (Settings) у установленного мода.
+
+**Установка.** `scripts/19-windhawk.ps1` (входит в `Install-Auto.ps1`): берёт `windhawk_setup.exe` из релизов `ramensoftware/windhawk`, сверяет SHA-256 с опубликованным на GitHub и ставит тихо (`/S`) в `Program Files\Windhawk`. Сами моды скрипт не ставит, их выбирают в окне программы.
+
+**Ловушки:** у многих популярных модов в описании стоит «for the Windows 11 taskbar» (Windows 11 Taskbar Styler, Island Media Controls, Taskbar Dock Animation): на Windows 10 они не работают. Если после мода Проводник ведёт себя странно, выключи мод в Windhawk. Откат: `scripts/99-rollback.ps1` (`uninstall.exe /S`).
+
+</details>
+<details>
 <summary><b>🎨 Обои</b>: тёмные градиенты 4K</summary>
 
 <br>
@@ -525,6 +539,7 @@ Set-ExecutionPolicy -Scope Process Bypass
     <tr><td>16</td><td>живые обои Aurora Glass (Lively)</td><td><code>AUTO</code> + <code>MANUAL</code></td></tr>
     <tr><td>17</td><td>ShellGuard: автовосстановление после зависания Проводника (по желанию)</td><td><code>AUTO</code></td></tr>
     <tr><td>18</td><td>PowerToys: поиск по Alt + Space, зоны окон, утилиты</td><td><code>AUTO</code></td></tr>
+    <tr><td>19</td><td>Windhawk: магазин модов для панели задач и оболочки</td><td><code>AUTO</code></td></tr>
   </tbody>
 </table>
 

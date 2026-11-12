@@ -52,6 +52,7 @@ Check "SysMonTray в автозагрузке (ярлык в Startup)"    { Test
 Check "ShellGuard запущен (чинит оформление после зависания Проводника)" { Get-CimInstance Win32_Process -Filter "Name='powershell.exe'" | Where-Object { $_.CommandLine -match 'ShellGuard\.ps1' } | Select-Object -First 1 } -Optional
 Check "ShellGuard в автозагрузке (ярлык в Startup)"     { Test-Path (Join-Path ([Environment]::GetFolderPath('Startup')) 'ShellGuard.lnk') } -Optional
 Check "PowerToys установлен и запущен"                  { (Test-Path "$env:LOCALAPPDATA\PowerToys\PowerToys.exe") -and (Get-Process PowerToys -ErrorAction SilentlyContinue) }
+Check "Windhawk установлен и запущен"                   { (Test-Path "$env:ProgramFiles\Windhawk\windhawk.exe") -and (Get-Process windhawk -ErrorAction SilentlyContinue) }
 Write-Host "`n== Шрифт, тема, Quake, обои ==" -ForegroundColor Cyan
 Check "Nerd Font установлен (JetBrainsMono NF)"        { Add-Type -AssemblyName System.Drawing; ((New-Object System.Drawing.Text.InstalledFontCollection).Families | Where-Object Name -match 'JetBrainsMono NF') }
 Check "Терминал использует Nerd Font"                  { (Get-Content $wtSettings -Raw) -match 'JetBrainsMono Nerd Font' }

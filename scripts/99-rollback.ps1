@@ -29,5 +29,7 @@ Get-Process PowerToys* -ErrorAction SilentlyContinue | Stop-Process -Force
 Get-ChildItem 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Uninstall', 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall' -ErrorAction SilentlyContinue |
     Where-Object { (Get-ItemProperty $_.PSPath).DisplayName -like 'PowerToys*' -and $_.PSChildName -match '^\{.+\}$' } |
     ForEach-Object { Start-Process msiexec -ArgumentList '/x', $_.PSChildName, '/qn', '/norestart' -Wait }
+# Windhawk (моды выключаются вместе с ним)
+if (Test-Path "$env:ProgramFiles\Windhawk\uninstall.exe") { Start-Process "$env:ProgramFiles\Windhawk\uninstall.exe" -ArgumentList '/S' -Wait }
 Write-Host "Вручную: DWMBlurGlass -> 'Удалить'; C:\ExplorerBlurMica\Release\uninstall.cmd; C:\AcrylicMenus\Installer\Uninstall.cmd; 7+ Taskbar Tweaker -> деинсталлятор; затем удали папки в C:\." -ForegroundColor Yellow
 Stop-Process -Name explorer -Force
