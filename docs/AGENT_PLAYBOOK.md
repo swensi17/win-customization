@@ -262,13 +262,6 @@
 - `[VERIFY]` процесс `PowerToys` запущен, есть `%LOCALAPPDATA%\PowerToys\PowerToys.exe`, `Alt + Space` открывает поиск.
 - `[ROLLBACK]` `99-rollback.ps1` (`msiexec /x` по коду продукта PowerToys из реестра).
 
-### Шаг 19. Windhawk `[AUTO]` + моды `[MANUAL]`
-`scripts\19-windhawk.ps1` скачивает `windhawk_setup.exe` из релизов `ramensoftware/windhawk`, сверяет SHA-256 с полем `digest` релиза и ставит тихо (`/S`), нужны права администратора.
-- `[MANUAL]` Моды выбираются в окне Windhawk: вкладка «Обзор», «Подробнее», «Установить».
-- `[WARN]` Моды с пометкой «for the Windows 11 taskbar» на Windows 10 не работают.
-- `[VERIFY]` процесс `windhawk` запущен, есть `%ProgramFiles%\Windhawk\windhawk.exe`.
-- `[ROLLBACK]` `99-rollback.ps1` (`%ProgramFiles%\Windhawk\uninstall.exe /S`).
-
 ## 4. Грабли и ограничения
 
 1. **Виртуализация AppData у упакованных (MSIX) агентов.** Если исполнитель запущен из Store-приложения, запись в `%LOCALAPPDATA%` и `%APPDATA%` попадает в `...\Packages\<Приложение>\LocalCache\...`, и Проводник пользователя этих файлов не видит. Симптомы: «Расположение недоступно», ярлык автозагрузки не срабатывает после перезагрузки. Решение: программы в `C:\...`, ярлык автозагрузки писать по реальному пути `...\Roaming\Microsoft\Windows\Start Menu\Programs\Startup`, шаги выполнять с отключённой изоляцией песочницы.
