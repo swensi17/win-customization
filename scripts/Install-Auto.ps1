@@ -86,7 +86,7 @@ if ($global:WczDwmNeedsManual -and -not $SkipManual -and (Want '03-dwmblurglass'
 # 3) панель задач, терминал, оформление
 foreach ($n in '01-taskbarx', '02-tray-and-news', '06-context-menu-verbs', '09-windows-terminal', '08-console-defaults', '10-powershell-profile', '11-wallpaper', '12-sysmon-tray', '14-accent-theme', '15-startup-review') { Run $n }
 # 4) живые обои и защита от зависания Проводника
-Run '16-live-wallpaper' -Auto; Run '17-shell-guard'; Run '18-powertoys'
+Run '16-live-wallpaper' -Auto; Run '17-shell-guard'; Run '18-powertoys'; Run '19-windhawk'
 
 # финальная страховка: после всех перезапусков Проводника панель задач должна быть на месте
 if ((Test-Path 'C:\TaskbarX\TaskbarX.exe') -and -not (Test-Win11) -and -not (Get-Process TaskbarX -ErrorAction SilentlyContinue)) { Start-UserProcess 'C:\TaskbarX\TaskbarX.exe' '-tbs=1 -color=0;0;0;0' }
