@@ -262,13 +262,6 @@
 - `[VERIFY]` процесс `PowerToys` запущен, есть `%LOCALAPPDATA%\PowerToys\PowerToys.exe`, `Alt + Space` открывает поиск.
 - `[ROLLBACK]` `99-rollback.ps1` (`msiexec /x` по коду продукта PowerToys из реестра).
 
-### Шаг 19. Open-Shell: меню «Пуск» на стекле `[AUTO]`
-`scripts\19-open-shell.ps1` ставит из релиза `Open-Shell/Open-Shell-Menu` только Start Menu (`/qn ADDLOCAL=StartMenu`, SHA-256 сверяется), пишет настройки в `HKCU:\Software\OpenShell\StartMenu\Settings` (`MenuStyle=Win7`, `SkinW7=Immersive`, `SkinOptionsW7=DARK=1, TRANSPARENT_MORE=1, DISABLE_MASK=1`, `GlassOverride=1`, `GlassColor=0x2A2420`, `GlassBlending=25`, `GlassOpacity=40`) и перезапускает `StartMenu.exe`.
-- `[WARN]` Установщику нужны права администратора; `StartMenu.exe` запускать от пользователя, иначе меню не перехватит Win.
-- `[WARN]` Скин Immersive даёт плоское матовое стекло; эффекта «жидкого стекла» macOS (преломление, блики) Open-Shell не умеет.
-- `[VERIFY]` процесс `StartMenu` запущен, клавиша Win открывает стеклянное меню.
-- `[ROLLBACK]` `99-rollback.ps1` (`msiexec /x` по коду продукта и удаление `HKCU:\Software\OpenShell`).
-
 ## 4. Грабли и ограничения
 
 1. **Виртуализация AppData у упакованных (MSIX) агентов.** Если исполнитель запущен из Store-приложения, запись в `%LOCALAPPDATA%` и `%APPDATA%` попадает в `...\Packages\<Приложение>\LocalCache\...`, и Проводник пользователя этих файлов не видит. Симптомы: «Расположение недоступно», ярлык автозагрузки не срабатывает после перезагрузки. Решение: программы в `C:\...`, ярлык автозагрузки писать по реальному пути `...\Roaming\Microsoft\Windows\Start Menu\Programs\Startup`, шаги выполнять с отключённой изоляцией песочницы.
