@@ -263,7 +263,7 @@
 - `[ROLLBACK]` `99-rollback.ps1` (`msiexec /x` по коду продукта PowerToys из реестра).
 
 ### Шаг 19. Open-Shell: меню «Пуск» на стекле `[AUTO]`
-`scripts\19-open-shell.ps1` ставит из релиза `Open-Shell/Open-Shell-Menu` только Start Menu (`/qn ADDLOCAL=StartMenu`, SHA-256 сверяется), пишет настройки в `HKCU:\Software\OpenShell\StartMenu\Settings` (`MenuStyle=Win7`, `SkinW7=Windows Aero`, `GlassOverride=1`, `GlassColor=0x1C1410`, `GlassOpacity=55`) и перезапускает `StartMenu.exe`.
+`scripts\19-open-shell.ps1` ставит из релиза `Open-Shell/Open-Shell-Menu` только Start Menu (`/qn ADDLOCAL=StartMenu`, SHA-256 сверяется), пишет настройки в `HKCU:\Software\OpenShell\StartMenu\Settings` (`MenuStyle=Win7`, `SkinW7=Immersive`, `SkinOptionsW7=DARK=1, TRANSPARENT_MORE=1`, `GlassOverride=1`, `GlassColor=0x1C1410`, `GlassOpacity=55`) и перезапускает `StartMenu.exe`.
 - `[WARN]` Установщику нужны права администратора; `StartMenu.exe` запускать от пользователя, иначе меню не перехватит Win.
 - `[VERIFY]` процесс `StartMenu` запущен, клавиша Win открывает стеклянное меню.
 - `[ROLLBACK]` `99-rollback.ps1` (`msiexec /x` по коду продукта и удаление `HKCU:\Software\OpenShell`).

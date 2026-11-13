@@ -19,8 +19,9 @@ if ((Test-Path $exe) -and -not $Force) {
 # настройки пользователя: стиль Windows 7, скин Windows Aero, тёмное стекло с акцентом #1793D1
 $k = 'HKCU:\Software\OpenShell\StartMenu\Settings'
 Set-Reg $k 'MenuStyle'       'Win7' 'String'
-Set-Reg $k 'SkinW7'          'Windows Aero' 'String'
+Set-Reg $k 'SkinW7'          'Immersive' 'String'     # плоский скин в духе Windows 10/11, а не Aero из Windows 7
 Set-Reg $k 'SkinVariationW7' '' 'String'
+Set-Reg $k 'SkinOptionsW7'   ([string[]]('DARK=1', 'LIGHT=0', 'AUTO=0', 'TRANSPARENT_MORE=1', 'TRANSPARENT_LESS=0', 'OPAQUE=0', 'USER_IMAGE=0', 'USER_NAME=0', 'SMALL_ICONS=0')) 'MultiString'
 Set-Reg $k 'GlassOverride'   1
 Set-Reg $k 'GlassColor'      0x1C1410        # BGR: тёмно-синий (#10141C)
 Set-Reg $k 'GlassIntensity'  100
