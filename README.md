@@ -451,9 +451,9 @@ Windows Terminal ставится из Microsoft Store и становится �
 
 <br>
 
-**Что делает.** Заменяет меню «Пуск» Windows 10 на меню в стиле Windows 7 со скином Windows Aero: тёмно-синее размытое стекло с тенью, как у Проводника с DWMBlurGlass. Поиск, закреплённые программы, «Все программы» списком.
+**Что делает.** Заменяет меню «Пуск» Windows 10 на Open-Shell со скином Immersive: плоское тёмное полупрозрачное меню в духе Windows 10/11, без рамок Windows 7. Поиск, закреплённые программы, «Все программы» списком.
 
-**Установка.** `scripts/19-open-shell.ps1` (входит в `Install-Auto.ps1`, нужны права администратора): берёт `OpenShellSetup_*.exe` из релизов `Open-Shell/Open-Shell-Menu`, сверяет SHA-256 и ставит только компонент Start Menu (`ADDLOCAL=StartMenu`). Настройки пишутся в `HKCU:\Software\OpenShell\StartMenu\Settings`: стиль `Win7`, скин `Windows Aero`, цвет стекла `#10141C`, прозрачность 55.
+**Установка.** `scripts/19-open-shell.ps1` (входит в `Install-Auto.ps1`, нужны права администратора): берёт `OpenShellSetup_*.exe` из релизов `Open-Shell/Open-Shell-Menu`, сверяет SHA-256 и ставит только компонент Start Menu (`ADDLOCAL=StartMenu`). Настройки пишутся в `HKCU:\Software\OpenShell\StartMenu\Settings`: стиль `Win7`, скин `Immersive` (тёмный, прозрачнее), цвет стекла `#10141C`, прозрачность 55.
 
 **Настройки.** ПКМ по кнопке «Пуск» → «Настройка», вкладка «Обложка»: скин и параметры стекла. Стандартное меню Windows: Shift + клик по кнопке «Пуск».
 
@@ -539,7 +539,7 @@ Set-ExecutionPolicy -Scope Process Bypass
     <tr><td>16</td><td>живые обои Aurora Glass (Lively)</td><td><code>AUTO</code> + <code>MANUAL</code></td></tr>
     <tr><td>17</td><td>ShellGuard: автовосстановление после зависания Проводника (по желанию)</td><td><code>AUTO</code></td></tr>
     <tr><td>18</td><td>PowerToys: поиск по Alt + Space, зоны окон, утилиты</td><td><code>AUTO</code></td></tr>
-    <tr><td>19</td><td>Open-Shell: меню «Пуск» на тёмном стекле</td><td><code>AUTO</code></td></tr>
+    <tr><td>19</td><td>Open-Shell: меню «Пуск» на тёмном стекле (Immersive)</td><td><code>AUTO</code></td></tr>
   </tbody>
 </table>
 

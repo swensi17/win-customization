@@ -450,9 +450,9 @@ My own web wallpaper (`configs/lively/aurora-glass/`): four large radial gradien
 
 <br>
 
-**What it does.** Replaces the Windows 10 Start menu with a Windows 7 style menu using the Windows Aero skin: dark blue blurred glass with a shadow, like Explorer with DWMBlurGlass. Search, pinned apps, All Programs as a list.
+**What it does.** Replaces the Windows 10 Start menu with Open-Shell using the Immersive skin: a flat dark translucent menu in the Windows 10/11 spirit, without Windows 7 frames. Search, pinned apps, All Programs as a list.
 
-**Installation.** `scripts/19-open-shell.ps1` (part of `Install-Auto.ps1`, needs admin rights): takes `OpenShellSetup_*.exe` from the `Open-Shell/Open-Shell-Menu` releases, checks the SHA-256 and installs only the Start Menu component (`ADDLOCAL=StartMenu`). Settings go to `HKCU:\Software\OpenShell\StartMenu\Settings`: style `Win7`, skin `Windows Aero`, glass color `#10141C`, opacity 55.
+**Installation.** `scripts/19-open-shell.ps1` (part of `Install-Auto.ps1`, needs admin rights): takes `OpenShellSetup_*.exe` from the `Open-Shell/Open-Shell-Menu` releases, checks the SHA-256 and installs only the Start Menu component (`ADDLOCAL=StartMenu`). Settings go to `HKCU:\Software\OpenShell\StartMenu\Settings`: style `Win7`, skin `Immersive` (dark, more transparent), glass color `#10141C`, opacity 55.
 
 **Settings.** Right click on Start → Settings, Skin tab: skin and glass options. The standard Windows menu: Shift + click on Start.
 
