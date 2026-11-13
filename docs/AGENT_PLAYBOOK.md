@@ -21,7 +21,7 @@
 ## 1. Целевая система и результат
 
 - Windows 10 Pro 22H2, build 19045, x64; облегчённая сборка Windows 10 Lite от Flibustier (вырезаны Defender, Edge, OneDrive, Hyper-V). Репозиторий рассчитан на все версии Windows 10 x64, проверен на этой сборке.
-- Права: обычный пользователь для большинства шагов, UAC для G[MANUAL]G-шагов регистрации.
+- Права: обычный пользователь для большинства шагов, UAC для `[MANUAL]`-шагов регистрации.
 - Рабочие каталоги: все сторонние программы лежат **в корне диска C:\** (причина в разделе 4).
 
 Результат:
@@ -77,59 +77,59 @@
 
 ## 3. Порядок выполнения
 
-Быстрый путь: Girm https://raw.githubusercontent.com/swensi17/win-customization/main/Install.ps1 | iexG (или Gscripts\Install-Auto.ps1G): переходит в 64-битный PowerShell 5.1, сам просит админа и сверяет пользователя, ставит Visual C++ x64, WebView2 и Windows Terminal, затем всё по порядку (04, 05, 07, 16 без ручных действий), не падает на одной ошибке, в конце печатает итог и запускает Test-Setup. Общие функции (загрузка с повтором, обход лимита GitHub API, проверка подписи и SHA-256, запуск без админа, перезапуск Проводника) лежат в Gscripts\lib\Common.ps1G. Вручную остаётся только кнопка «Установить» в DWMBlurGlass и только при первой установке (WARN: у программы нет командной строки; флаг G-SkipManualG пропускает ожидание). WARN: GInstall.ps1G держать только в ASCII и без BOM, иначе Girm | iexG падает; остальные G.ps1G наоборот в UTF-8 с BOM, иначе PowerShell 5.1 портит кириллицу. Подробно по шагам:
+Быстрый путь: `irm https://raw.githubusercontent.com/swensi17/win-customization/main/Install.ps1 | iex` (или `scripts\Install-Auto.ps1`): переходит в 64-битный PowerShell 5.1, сам просит админа и сверяет пользователя, ставит Visual C++ x64, WebView2 и Windows Terminal, затем всё по порядку (04, 05, 07, 16 без ручных действий), не падает на одной ошибке, в конце печатает итог и запускает Test-Setup. Общие функции (загрузка с повтором, обход лимита GitHub API, проверка подписи и SHA-256, запуск без админа, перезапуск Проводника) лежат в `scripts\lib\Common.ps1`. Вручную остаётся только кнопка «Установить» в DWMBlurGlass и только при первой установке (WARN: у программы нет командной строки; флаг `-SkipManual` пропускает ожидание). WARN: `Install.ps1` держать только в ASCII и без BOM, иначе `irm | iex` падает; остальные `.ps1` наоборот в UTF-8 с BOM, иначе PowerShell 5.1 портит кириллицу. Подробно по шагам:
 
-### Шаг 0. Проверка окружения G[AUTO]G
-Gscripts\00-prereqs.ps1G
-- G[VERIFY]G build ≥ 19041, Windows Terminal установлен, политика GLocalMachineG не GRestrictedG/GAllSignedG (иначе профиль PowerShell не загрузится).
+### Шаг 0. Проверка окружения `[AUTO]`
+`scripts\00-prereqs.ps1`
+- `[VERIFY]` build ≥ 19041, Windows Terminal установлен, политика `LocalMachine` не `Restricted`/`AllSigned` (иначе профиль PowerShell не загрузится).
 
-### Шаг 1. TaskbarX: центр + прозрачность G[AUTO]G
-Gscripts\01-taskbarx.ps1G. Аргументы запуска: G-tbs=1 -color=0;0;0;0G.
-- G-tbsG: 1 = прозрачная, 2 = блюр, 3 = акрил, 4 = прозрачная с градиентом, 5 = непрозрачная, 0 = выкл.
-- Не добавлять G-dtbsowm=1G: он возвращает обычную панель, когда окно развёрнуто (получается серая панель).
-- G[VERIFY]G GGet-Process TaskbarXG; иконки по центру; ярлык лежит в G[Environment]::GetFolderPath('Startup')G.
-- G[ROLLBACK]G Gscripts\99-rollback.ps1G.
+### Шаг 1. TaskbarX: центр + прозрачность `[AUTO]`
+`scripts\01-taskbarx.ps1`. Аргументы запуска: `-tbs=1 -color=0;0;0;0`.
+- `-tbs`: 1 = прозрачная, 2 = блюр, 3 = акрил, 4 = прозрачная с градиентом, 5 = непрозрачная, 0 = выкл.
+- Не добавлять `-dtbsowm=1`: он возвращает обычную панель, когда окно развёрнуто (получается серая панель).
+- `[VERIFY]` `Get-Process TaskbarX`; иконки по центру; ярлык лежит в `[Environment]::GetFolderPath('Startup')`.
+- `[ROLLBACK]` `scripts\99-rollback.ps1`.
 
-### Шаг 2. Трей и «Новости» G[AUTO]G
-Gscripts\02-tray-and-news.ps1G
-- GHKCU\...\Feeds\ShellFeedsTaskbarViewMode = 2G (Новости выкл).
-- GHKCU\...\Explorer\EnableAutoTray = 1G (все значки уходят под G^G, системные остаются).
-- Затем перезапускается Проводник. G[WARN]G Это закрывает TaskbarX, скрипт запускает его снова.
-- G[MANUAL]G Нужные значки (мессенджеры и т.п.) пользователь перетаскивает из G^G на панель сам.
-- G[VERIFY]G газеты нет, в трее только системные значки и стрелка.
+### Шаг 2. Трей и «Новости» `[AUTO]`
+`scripts\02-tray-and-news.ps1`
+- `HKCU\...\Feeds\ShellFeedsTaskbarViewMode = 2` (Новости выкл).
+- `HKCU\...\Explorer\EnableAutoTray = 1` (все значки уходят под `^`, системные остаются).
+- Затем перезапускается Проводник. `[WARN]` Это закрывает TaskbarX, скрипт запускает его снова.
+- `[MANUAL]` Нужные значки (мессенджеры и т.п.) пользователь перетаскивает из `^` на панель сам.
+- `[VERIFY]` газеты нет, в трее только системные значки и стрелка.
 
-### Шаг 3. DWMBlurGlass: стекло на рамках всех окон G[AUTO + MANUAL]G
-Gscripts\03-dwmblurglass.ps1G скачивает в GC:\DWMBlurGlassG и кладёт готовый Gconfig.iniG.
-- G[WARN]G Программа выдаёт «приложение должно быть запущено вне папки пользователя». Только GC:\...G.
-- G[MANUAL]G Запустить GDWMBlurGlass.exeG → **Установить** (статус «Установлено») → вкладка «Цвета тёмного режима»: GRGBA(0,0,0,100)G для активного и неактивного заголовка → **Сохранить конфигурацию**.
+### Шаг 3. DWMBlurGlass: стекло на рамках всех окон `[AUTO + MANUAL]`
+`scripts\03-dwmblurglass.ps1` скачивает в `C:\DWMBlurGlass` и кладёт готовый `config.ini`.
+- `[WARN]` Программа выдаёт «приложение должно быть запущено вне папки пользователя». Только `C:\...`.
+- `[MANUAL]` Запустить `DWMBlurGlass.exe` → **Установить** (статус «Установлено») → вкладка «Цвета тёмного режима»: `RGBA(0,0,0,100)` для активного и неактивного заголовка → **Сохранить конфигурацию**.
 - Если эффект не виден: вкладка «Символы» → скачать символы, затем «Удалить» → «Установить».
-- Ключевые значения конфига (Gconfigs\DWMBlurGlass.config.iniG): GblurAmount=35G, GactiveBlendColorDark=1677721600G (чёрный, прозрачность около 100/255), Greflection=trueG.
+- Ключевые значения конфига (`configs\DWMBlurGlass.config.ini`): `blurAmount=35`, `activeBlendColorDark=1677721600` (чёрный, прозрачность около 100/255), `reflection=true`.
 
 <img src="../screenshots/compare/c4-dwm.png" width="100%">
 
-- G[VERIFY]G открыть Проводник: заголовок размытый и полупрозрачный.
-- G[ROLLBACK]G в программе кнопка «Удалить».
+- `[VERIFY]` открыть Проводник: заголовок размытый и полупрозрачный.
+- `[ROLLBACK]` в программе кнопка «Удалить».
 
-### Шаг 4. ExplorerBlurMica: фон Проводника G[AUTO + MANUAL]G
-Gscripts\04-explorerblurmica.ps1G разворачивает GC:\ExplorerBlurMica\ReleaseG и кладёт Gconfig.iniG.
-- G[MANUAL]G Запустить Gregister.cmdG (UAC). Он вызывает Gregsvr32G и перезапускает Проводник.
-- Конфиг: Geffect=2G (Mica), тёмный цвет G0,0,0G с Ga=120G.
-- G[WARN]G Geffect=3G (чистый блюр) даёт неприятное «моргание» при открытии окна: окно сначала резкое, потом включается стекло. Оставлять Geffect=2G.
+### Шаг 4. ExplorerBlurMica: фон Проводника `[AUTO + MANUAL]`
+`scripts\04-explorerblurmica.ps1` разворачивает `C:\ExplorerBlurMica\Release` и кладёт `config.ini`.
+- `[MANUAL]` Запустить `register.cmd` (UAC). Он вызывает `regsvr32` и перезапускает Проводник.
+- Конфиг: `effect=2` (Mica), тёмный цвет `0,0,0` с `a=120`.
+- `[WARN]` `effect=3` (чистый блюр) даёт неприятное «моргание» при открытии окна: окно сначала резкое, потом включается стекло. Оставлять `effect=2`.
 - После регистрации перезапустить TaskbarX (Проводник его убил).
-- G[VERIFY]G фон списка файлов в Проводнике тёмный и полупрозрачный.
-- G[ROLLBACK]G Guninstall.cmdG в той же папке.
+- `[VERIFY]` фон списка файлов в Проводнике тёмный и полупрозрачный.
+- `[ROLLBACK]` `uninstall.cmd` в той же папке.
 
-### Шаг 5. AcrylicMenus: акрил в меню ПКМ G[AUTO + MANUAL]G
-Gscripts\05-acrylicmenus.ps1G → G[MANUAL]G GC:\AcrylicMenus\Installer\Install.cmdG (не GInstallAllUsersG).
-- Установщик копирует файлы в G%LocalAppData%\AcrylicMenusG, пишет автозапуск и стартует GAcrylicMenusLoader.exeG.
-- G[WARN]G Проект экспериментальный. Работает с классическими меню Win32 (Проводник, рабочий стол), нестандартные меню (Telegram, Electron) не затрагивает.
-- G[VERIFY]G ПКМ по рабочему столу: меню размытое и полупрозрачное.
-- G[ROLLBACK]G GInstaller\Uninstall.cmdG.
+### Шаг 5. AcrylicMenus: акрил в меню ПКМ `[AUTO + MANUAL]`
+`scripts\05-acrylicmenus.ps1` → `[MANUAL]` `C:\AcrylicMenus\Installer\Install.cmd` (не `InstallAllUsers`).
+- Установщик копирует файлы в `%LocalAppData%\AcrylicMenus`, пишет автозапуск и стартует `AcrylicMenusLoader.exe`.
+- `[WARN]` Проект экспериментальный. Работает с классическими меню Win32 (Проводник, рабочий стол), нестандартные меню (Telegram, Electron) не затрагивает.
+- `[VERIFY]` ПКМ по рабочему столу: меню размытое и полупрозрачное.
+- `[ROLLBACK]` `Installer\Uninstall.cmd`.
 
 ![Меню ПКМ](../screenshots/05-context-menu.png)
 
-### Шаг 6. Свои пункты в меню ПКМ G[AUTO]G
-Gscripts\06-context-menu-verbs.ps1G (только GHKCUG, без администратора).
+### Шаг 6. Свои пункты в меню ПКМ `[AUTO]`
+`scripts\06-context-menu-verbs.ps1` (только `HKCU`, без администратора).
 
 <table width="100%">
   <thead>
@@ -142,11 +142,11 @@ Gscripts\06-context-menu-verbs.ps1G (только GHKCUG, без админис�
   </tbody>
 </table>
 
-- G[VERIFY]G пункты видны в меню (при необходимости перезапустить Проводник).
+- `[VERIFY]` пункты видны в меню (при необходимости перезапустить Проводник).
 
-### Шаг 7. 7+ Taskbar Tweaker G[AUTO + MANUAL]G
-Gscripts\07-taskbar-tweaker.ps1G скачивает установщик и **проверяет цифровую подпись** (должна быть GValidG, издатель Michael Maltsev); при невалидной подписи файл удаляется.
-- G[MANUAL]G Запустить установщик, включить автозапуск. Рекомендуемые настройки:
+### Шаг 7. 7+ Taskbar Tweaker `[AUTO + MANUAL]`
+`scripts\07-taskbar-tweaker.ps1` скачивает установщик и **проверяет цифровую подпись** (должна быть `Valid`, издатель Michael Maltsev); при невалидной подписи файл удаляется.
+- `[MANUAL]` Запустить установщик, включить автозапуск. Рекомендуемые настройки:
   - Нажатие средней кнопки мыши по значку: **Закрыть**.
   - Колесо мыши над панелью: **переключение между окнами**.
   - Двойное нажатие на панели задач: **Диспетчер задач**.
@@ -154,133 +154,134 @@ Gscripts\07-taskbar-tweaker.ps1G скачивает установщик и **п
 
 ![7+ Taskbar Tweaker](../screenshots/09-7tt-settings.png)
 
-### Шаг 8. Консоль и терминал по умолчанию G[AUTO]G
-Gscripts\08-console-defaults.ps1G
-- Старая консоль (GHKCU\ConsoleG): прозрачность 215/255, Consolas 18 px, мягкая цветовая таблица, 120×30.
-- Терминал по умолчанию: GHKCU\Console\%%StartupG: GDelegationConsole={2EACA947-7F5F-4CFA-BA87-8F7FBEEFBE69}G, GDelegationTerminal={E12CFF52-A866-4C77-9A90-F570A7AA2C6B}G.
-- G[WARN]G Ключ называется буквально G%%StartupG; в PowerShell обращаться через G-LiteralPathG.
-- G[VERIFY]G GWin+RG → GcmdG открывается в Windows Terminal.
+### Шаг 8. Консоль и терминал по умолчанию `[AUTO]`
+`scripts\08-console-defaults.ps1`
+- Старая консоль (`HKCU\Console`): прозрачность 215/255, Consolas 18 px, мягкая цветовая таблица, 120×30.
+- Терминал по умолчанию: `HKCU\Console\%%Startup`: `DelegationConsole={2EACA947-7F5F-4CFA-BA87-8F7FBEEFBE69}`, `DelegationTerminal={E12CFF52-A866-4C77-9A90-F570A7AA2C6B}`.
+- `[WARN]` Ключ называется буквально `%%Startup`; в PowerShell обращаться через `-LiteralPath`.
+- `[VERIFY]` `Win+R` → `cmd` открывается в Windows Terminal.
 
-### Шаг 9. Windows Terminal: тема «Arch Glass» G[AUTO]G
-Gscripts\09-windows-terminal.ps1G копирует Gconfigs\windows-terminal.settings.jsonG в
-G%LOCALAPPDATA%\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.jsonG (с бэкапом).
+### Шаг 9. Windows Terminal: тема «Arch Glass» `[AUTO]`
+`scripts\09-windows-terminal.ps1` копирует `configs\windows-terminal.settings.json` в
+`%LOCALAPPDATA%\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json` (с бэкапом).
 
 Ключевые параметры:
-- Профиль по умолчанию: Windows PowerShell, команда Gpowershell.exe -NoLogoG.
-- Профиль cmd: Gcmd.exe /k "cls & prompt $E[38;2;23;147;209m$P$E[0m $E[38;2;158;206;106m❯$E[0m$S"G.
-- Gprofiles.defaultsG: шрифт Cascadia Code 12, Gopacity=72G, GuseAcrylic=trueG, отступы G14,10,14,10G, курсор-палка, без полосы прокрутки.
-- Схема «Arch Glass»: фон G#0b0f14G, текст G#c9d1d9G, акцент G#1793d1G.
-- Тема окна «Arch Glass UI»: строка вкладок со стеклом: GtabRow.background=#12171dB8G, GunfocusedBackground=#12171dA0G, GuseAcrylicInTabRow=trueG.
+- Профиль по умолчанию: Windows PowerShell, команда `powershell.exe -NoLogo`.
+- Профиль cmd: `cmd.exe /k "cls & prompt $E[38;2;23;147;209m$P$E[0m $E[38;2;158;206;106m❯$E[0m$S"`.
+- `profiles.defaults`: шрифт Cascadia Code 12, `opacity=72`, `useAcrylic=true`, отступы `14,10,14,10`, курсор-палка, без полосы прокрутки.
+- Схема «Arch Glass»: фон `#0b0f14`, текст `#c9d1d9`, акцент `#1793d1`.
+- Тема окна «Arch Glass UI»: строка вкладок со стеклом: `tabRow.background=#12171dB8`, `unfocusedBackground=#12171dA0`, `useAcrylicInTabRow=true`.
 
-G[WARN]G Ловушки конфига:
-- В GschemesG цвета только G#rrggbbG. Прозрачность в GselectionBackgroundG (например, G#1793d155G) ломает загрузку всего файла («Не удалось загрузить параметры»).
-- Полностью прозрачная строка вкладок (G...00G) даёт «пропадающие» кнопки окна при потере фокуса и вид «как будто нет фона». Нужен оттенок с непрозрачностью около 60–70 %.
-- Шрифт: GJetBrainsMono Nerd FontG (шаг 13), запасной Cascadia Code встроен в Windows Terminal.
-- Quake-режим: действие GquakeModeG на Gwin+sc(41)G (GWin + ~G) и GminimizeToNotificationArea=trueG; горячая клавиша работает, пока процесс Windows Terminal запущен.
+`[WARN]` Ловушки конфига:
+- В `schemes` цвета только `#rrggbb`. Прозрачность в `selectionBackground` (например, `#1793d155`) ломает загрузку всего файла («Не удалось загрузить параметры»).
+- Полностью прозрачная строка вкладок (`...00`) даёт «пропадающие» кнопки окна при потере фокуса и вид «как будто нет фона». Нужен оттенок с непрозрачностью около 60–70 %.
+- Шрифт: `JetBrainsMono Nerd Font` (шаг 13), запасной Cascadia Code встроен в Windows Terminal.
+- Quake-режим: действие `quakeMode` на `win+sc(41)` (`Win + ~`) и `minimizeToNotificationArea=true`; горячая клавиша работает, пока процесс Windows Terminal запущен.
 
 <img src="../screenshots/20-quake.png" width="520">
 
 
 <img src="../screenshots/compare/c5-terminal.png" width="100%">
 
-### Шаг 10. Профиль PowerShell и cmd: логотип Windows 7 G[AUTO]G
-Gscripts\10-powershell-profile.ps1G кладёт в папку профиля GMicrosoft.PowerShell_profile.ps1G, общую заставку GShow-Splash.ps1G и оформление cmd Gcmd-autorun.cmdG (из Gconfigs\G), а также прописывает GAutoRunG для cmd.
+### Шаг 10. Профиль PowerShell и cmd: логотип Windows 7 `[AUTO]`
+`scripts\10-powershell-profile.ps1` кладёт в папку профиля `Microsoft.PowerShell_profile.ps1`, общую заставку `Show-Splash.ps1` и оформление cmd `cmd-autorun.cmd` (из `configs\`), а также прописывает `AutoRun` для cmd.
 
 Что делает профиль:
 - Заставка: цветной логотип Windows 7 (ASCII, 4 цвета) + информация: пользователь@хост, ОС, аптайм, оболочка, CPU, GPU, RAM, диск C, IP, число процессов, время.
-- Приглашение: голубой путь (G~G для домашней папки, длинные пути сокращаются до G…\последние\три\папкиG) + зелёная стрелка G❯G. В cmd путь выводится отдельной строкой (G$_G в GpromptG), стрелка ниже.
-- Быстрый старт: статичные данные (ОС/CPU/GPU) кэшируются в G%LOCALAPPDATA%\splash-cache.jsonG на 7 дней, остальное считается без WMI (около 75 мс).
-- Демо-режим для публичных скриншотов: файл Gsplash-demo.jsonG рядом с профилем (G{"user":"user","host":"pc","ip":"192.168.1.10"}G) подменяет имя, хост и IP на нейтральные. Удали файл, чтобы вернуть реальные значения.
-- Заставка включается только в интерактивной консоли (G-not [Console]::IsOutputRedirectedG), поэтому скрипты и инструменты её не видят. Отключить вручную: G$env:NO_SPLASH=1G.
+- Приглашение: голубой путь (`~` для домашней папки, длинные пути сокращаются до `…\последние\три\папки`) + зелёная стрелка `❯`. В cmd путь выводится отдельной строкой (`$_` в `prompt`), стрелка ниже.
+- Быстрый старт: статичные данные (ОС/CPU/GPU) кэшируются в `%LOCALAPPDATA%\splash-cache.json` на 7 дней, остальное считается без WMI (около 75 мс).
+- Демо-режим для публичных скриншотов: файл `splash-demo.json` рядом с профилем (`{"user":"user","host":"pc","ip":"192.168.1.10"}`) подменяет имя, хост и IP на нейтральные. Удали файл, чтобы вернуть реальные значения.
+- Заставка включается только в интерактивной консоли (`-not [Console]::IsOutputRedirected`), поэтому скрипты и инструменты её не видят. Отключить вручную: `$env:NO_SPLASH=1`.
 
-- **cmd.** Скрипт Gcmd-autorun.cmdG прописывается в GHKCU\Software\Microsoft\Command Processor\AutoRunG значением Gif exist "<путь>\cmd-autorun.cmd" call "<путь>\cmd-autorun.cmd"G. Он включает Gchcp 65001G, ставит цветное приглашение и вызывает GShow-Splash.ps1 -ShellName "Command Prompt"G. Профиль «Командная строка» в Windows Terminal оставлен обычным Gcmd.exeG.
-- G[WARN]G AutoRun выполняется при **каждом** запуске cmd, в том числе Gcmd /cG из других программ. Поэтому скрипт обязан сразу выходить для неинтерактивных запусков: проверять G%cmdcmdline%G только через отложенное раскрытие (Gsetlocal EnableDelayedExpansionG, G!cmdcmdline!G), иначе символы G& | ! % "G в чужой команде ломают разбор.
-- G[WARN]G Для запуска из терминала GcmdcmdlineG равна Gcmd.exe G (без ключей), хвост после Gcmd.exeG бывает пустым. Подстановка кавычек на пустой переменной даёт мусор, поэтому к хвосту дописывается символ GxG, и сравнивать нужно с GxG.
-- G[VERIFY]G Gcmd /c "echo a & echo b | find \"b\""G даёт тот же вывод, что с отключённым автозапуском (Gcmd /d /c ...G); новая вкладка Gcmd.exeG показывает заставку.
+- **cmd.** Скрипт `cmd-autorun.cmd` прописывается в `HKCU\Software\Microsoft\Command Processor\AutoRun` значением `if exist "<путь>\cmd-autorun.cmd" call "<путь>\cmd-autorun.cmd"`. Он включает `chcp 65001`, ставит цветное приглашение и вызывает `Show-Splash.ps1 -ShellName "Command Prompt"`. Профиль «Командная строка» в Windows Terminal оставлен обычным `cmd.exe`.
+- `[WARN]` AutoRun выполняется при **каждом** запуске cmd, в том числе `cmd /c` из других программ. Поэтому скрипт обязан сразу выходить для неинтерактивных запусков: проверять `%cmdcmdline%` только через отложенное раскрытие (`setlocal EnableDelayedExpansion`, `!cmdcmdline!`), иначе символы `& | ! % "` в чужой команде ломают разбор.
+- `[WARN]` Для запуска из терминала `cmdcmdline` равна `cmd.exe ` (без ключей), хвост после `cmd.exe` бывает пустым. Подстановка кавычек на пустой переменной даёт мусор, поэтому к хвосту дописывается символ `x`, и сравнивать нужно с `x`.
+- `[VERIFY]` `cmd /c "echo a & echo b | find \"b\""` даёт тот же вывод, что с отключённым автозапуском (`cmd /d /c ...`); новая вкладка `cmd.exe` показывает заставку.
 <img src="../screenshots/19-cmd-splash.png" width="520">
-G[WARN]G Выравнивание: каждая строка логотипа дополняется пробелами до видимой ширины 46 символов. Если ширина строк логотипа меняется, поправь число 46 в цикле вывода.
-G[WARN]G В PowerShell запятая в массиве имеет приоритет над G+G: G"a" + "b",G ломает элементы массива. Склеивай строки внутри одной пары кавычек.
+`[WARN]` Выравнивание: каждая строка логотипа дополняется пробелами до видимой ширины 46 символов. Если ширина строк логотипа меняется, поправь число 46 в цикле вывода.
+`[WARN]` В PowerShell запятая в массиве имеет приоритет над `+`: `"a" + "b",` ломает элементы массива. Склеивай строки внутри одной пары кавычек.
 
-- G[VERIFY]G новая вкладка PowerShell показывает логотип и ровный столбец данных.
-- G[ROLLBACK]G вернуть GMicrosoft.PowerShell_profile.ps1.bakG.
+- `[VERIFY]` новая вкладка PowerShell показывает логотип и ровный столбец данных.
+- `[ROLLBACK]` вернуть `Microsoft.PowerShell_profile.ps1.bak`.
 
-### Шаг 11. Обои G[AUTO]G
-Gscripts\11-wallpaper.ps1G (Wallhaven, SFW, тёмные градиенты 4K, около 0,4 и 0,6 МБ) → GC:\WallpapersG.
+### Шаг 11. Обои `[AUTO]`
+`scripts\11-wallpaper.ps1` (Wallhaven, SFW, тёмные градиенты 4K, около 0,4 и 0,6 МБ) → `C:\Wallpapers`.
 
-### Шаг 12. SysMonTray: индикатор нагрузки в трее G[AUTO]G
-Gscripts\12-sysmon-tray.ps1G копирует Gconfigs\SysMonTray.ps1G в GC:\SysMonTrayG, создаёт ярлык автозапуска в **настоящей** папке Startup и запускает скрипт скрытым окном (Gpowershell.exe -NoProfile -STA -WindowStyle Hidden -File ...G).
-- Поведение: один значок с числом 0–100 (заполнение RAM, цифры белые, жёлтые от 75, красные от 90); левый клик переключает RAM ↔ CPU; подсказка GRAM: N/100 (X/Y ГБ)G и GCPU: N/100G.
-- G[WARN]G Текст подсказки GNotifyIcon.TextG не длиннее 63 символов, иначе при обновлении значка возникает исключение и значок перестаёт реагировать.
-- G[WARN]G Для цикла сообщений трея нужен режим G-STAG. Без него значок не появляется.
-- G[WARN]G Значок появляется под стрелкой G^G, если включён GEnableAutoTray=1G; пользователь перетаскивает его на панель сам.
-- G[VERIFY]G GTest-Setup.ps1G: процесс и ярлык автозагрузки; визуально число рядом с G^G.
-- G[ROLLBACK]G G99-rollback.ps1G (останавливает процесс, удаляет ярлык и папку GC:\SysMonTrayG).
+### Шаг 12. SysMonTray: индикатор нагрузки в трее `[AUTO]`
+`scripts\12-sysmon-tray.ps1` копирует `configs\SysMonTray.ps1` в `C:\SysMonTray`, создаёт ярлык автозапуска в **настоящей** папке Startup и запускает скрипт скрытым окном (`powershell.exe -NoProfile -STA -WindowStyle Hidden -File ...`).
+- Поведение: один значок с числом 0–100 (заполнение RAM, цифры белые, жёлтые от 75, красные от 90); левый клик переключает RAM ↔ CPU; подсказка `RAM: N/100 (X/Y ГБ)` и `CPU: N/100`.
+- `[WARN]` Текст подсказки `NotifyIcon.Text` не длиннее 63 символов, иначе при обновлении значка возникает исключение и значок перестаёт реагировать.
+- `[WARN]` Для цикла сообщений трея нужен режим `-STA`. Без него значок не появляется.
+- `[WARN]` Значок появляется под стрелкой `^`, если включён `EnableAutoTray=1`; пользователь перетаскивает его на панель сам.
+- `[VERIFY]` `Test-Setup.ps1`: процесс и ярлык автозагрузки; визуально число рядом с `^`.
+- `[ROLLBACK]` `99-rollback.ps1` (останавливает процесс, удаляет ярлык и папку `C:\SysMonTray`).
 
 <img src="../screenshots/18-sysmon-tray.png" width="520">
 
-### Шаг 13. Nerd Font G[AUTO]G
-Gscripts\13-nerd-font.ps1G скачивает JetBrainsMono Nerd Font Gv3.5.1G и ставит 4 начертания (Regular, Bold, Italic, BoldItalic) для текущего пользователя: G%LOCALAPPDATA%\Microsoft\Windows\FontsG + GHKCU\...\FontsG. В терминале шрифт задан как GJetBrainsMono Nerd FontG (шаг 09), GDI-имя семейства GJetBrainsMono NFG.
-- G[WARN]G Архив G.tar.xzG встроенный GtarG Windows 10 не распаковывает (нет GxzG), поэтому используется G.zipG.
-- G[WARN]G Если установку выполняет упакованное (MSIX) приложение, запись в G%LOCALAPPDATA%G виртуализируется и шрифт системе не виден. Тогда ставить в GC:\Windows\FontsG + GHKLMG (нужны права администратора).
-- G[VERIFY]G в приглашении внутри git-репозитория видна иконка ветки GG, а не квадрат.
+### Шаг 13. Nerd Font `[AUTO]`
+`scripts\13-nerd-font.ps1` скачивает JetBrainsMono Nerd Font `v3.5.1` и ставит 4 начертания (Regular, Bold, Italic, BoldItalic) для текущего пользователя: `%LOCALAPPDATA%\Microsoft\Windows\Fonts` + `HKCU\...\Fonts`. В терминале шрифт задан как `JetBrainsMono Nerd Font` (шаг 09), GDI-имя семейства `JetBrainsMono NF`.
+- `[WARN]` Архив `.tar.xz` встроенный `tar` Windows 10 не распаковывает (нет `xz`), поэтому используется `.zip`.
+- `[WARN]` Если установку выполняет упакованное (MSIX) приложение, запись в `%LOCALAPPDATA%` виртуализируется и шрифт системе не виден. Тогда ставить в `C:\Windows\Fonts` + `HKLM` (нужны права администратора).
+- `[VERIFY]` в приглашении внутри git-репозитория видна иконка ветки ``, а не квадрат.
 
-### Шаг 13a. Приглашение и PSReadLine G[AUTO]G (часть профиля, шаг 10)
-- Приглашение: путь (G~G, сокращение длинных путей), ветка git (чтение G.git/HEADG вверх по дереву, без Ggit.exeG, поддержка worktree через файл G.gitG), время последней команды ≥ 0,5 с, стрелка зелёная/красная по G$?G (первая строка функции GpromptG).
-- PSReadLine: цвета через ANSI-последовательности, ↑/↓ = GHistorySearchBackward/ForwardG, GTabG = GMenuCompleteG. Подсказки G-PredictionSource HistoryG включаются только при версии ≥ 2.1.
-- G[WARN]G **Не обновлять PSReadLine из PowerShell Gallery на этой системе.** Версии 2.3.6 и 2.4.5 закрывали консоль Windows Terminal с кодом 5 на первом нажатии клавиши, даже с G-NoProfileG. Встроенный 2.0.0 работает. Если новую версию уже поставили: удалить GDocuments\WindowsPowerShell\Modules\PSReadLine\<версия>G; если DLL заблокирована открытым окном, сначала переименовать GPSReadLine.psd1G в этой папке, тогда версия перестаёт быть видимой.
+### Шаг 13a. Приглашение и PSReadLine `[AUTO]` (часть профиля, шаг 10)
+- Приглашение: путь (`~`, сокращение длинных путей), ветка git (чтение `.git/HEAD` вверх по дереву, без `git.exe`, поддержка worktree через файл `.git`), время последней команды ≥ 0,5 с, стрелка зелёная/красная по `$?` (первая строка функции `prompt`).
+- PSReadLine: цвета через ANSI-последовательности, ↑/↓ = `HistorySearchBackward/Forward`, `Tab` = `MenuComplete`. Подсказки `-PredictionSource History` включаются только при версии ≥ 2.1.
+- `[WARN]` **Не обновлять PSReadLine из PowerShell Gallery на этой системе.** Версии 2.3.6 и 2.4.5 закрывали консоль Windows Terminal с кодом 5 на первом нажатии клавиши, даже с `-NoProfile`. Встроенный 2.0.0 работает. Если новую версию уже поставили: удалить `Documents\WindowsPowerShell\Modules\PSReadLine\<версия>`; если DLL заблокирована открытым окном, сначала переименовать `PSReadLine.psd1` в этой папке, тогда версия перестаёт быть видимой.
 
-### Шаг 14. Тёмная тема и акцентный цвет G[AUTO]G
-Gscripts\14-accent-theme.ps1G: GAppsUseLightTheme=0G, GSystemUsesLightTheme=0G, GEnableTransparency=1G; акцент G#1793D1G: GAccent\AccentColorMenu=0xFFD19317G (ABGR), GStartColorMenuG, GAccentPaletteG (8×RGBA), GDWM\AccentColorG, GColorizationColor=0xC41793D1G, GColorPrevalence=0G. Применяется рассылкой GWM_SETTINGCHANGEG (GImmersiveColorSetG) без перезапуска Проводника.
-- G[WARN]G В PowerShell 5.1 литерал G0xFFD19317G становится отрицательным Int32, и операции с G[uint32]G падают. Значения DWORD задавать через G[Convert]::ToInt32('FFD19317',16)G.
-- G[ROLLBACK]G G99-rollback.ps1G восстанавливает значения из G%USERPROFILE%\accent-backup.jsonG.
+### Шаг 14. Тёмная тема и акцентный цвет `[AUTO]`
+`scripts\14-accent-theme.ps1`: `AppsUseLightTheme=0`, `SystemUsesLightTheme=0`, `EnableTransparency=1`; акцент `#1793D1`: `Accent\AccentColorMenu=0xFFD19317` (ABGR), `StartColorMenu`, `AccentPalette` (8×RGBA), `DWM\AccentColor`, `ColorizationColor=0xC41793D1`, `ColorPrevalence=0`. Применяется рассылкой `WM_SETTINGCHANGE` (`ImmersiveColorSet`) без перезапуска Проводника.
+- `[WARN]` В PowerShell 5.1 литерал `0xFFD19317` становится отрицательным Int32, и операции с `[uint32]` падают. Значения DWORD задавать через `[Convert]::ToInt32('FFD19317',16)`.
+- `[ROLLBACK]` `99-rollback.ps1` восстанавливает значения из `%USERPROFILE%\accent-backup.json`.
 
-### Шаг 15. Автозагрузка G[AUTO]G
-Gscripts\15-startup-review.ps1 [-Disable <маска>] [-Enable <маска>]G: отключение через GHKCU\...\Explorer\StartupApproved\RunG значением G03 00 00 00G + FILETIME (как «Диспетчер задач»), запись в GRunG остаётся. Не отключать компоненты оформления.
+### Шаг 15. Автозагрузка `[AUTO]`
+`scripts\15-startup-review.ps1 [-Disable <маска>] [-Enable <маска>]`: отключение через `HKCU\...\Explorer\StartupApproved\Run` значением `03 00 00 00` + FILETIME (как «Диспетчер задач»), запись в `Run` остаётся. Не отключать компоненты оформления.
 
-### Шаг 16. Живые обои Aurora Glass G[AUTO + MANUAL]G
-Gscripts\16-live-wallpaper.ps1G собирает GC:\LivelyWallpapers\aurora-glass.zipG из Gconfigs\lively\aurora-glass\G (Gindex.htmlG + GLivelyInfo.jsonG, GType=1G = веб-обои) и открывает Lively.
-- G[MANUAL]G Lively → G+G → выбрать zip → кликнуть «Aurora Glass».
-- G[WARN]G GLively.exe setwp --file <html|папка|zip>G в Lively 2.x пишет в журнал GUnsupported command import fileG для файлов не из библиотеки; импорт только через окно. Класть пакет напрямую в G%LOCALAPPDATA%\Lively Wallpaper\Library\wallpapersG из упакованного приложения бесполезно: запись виртуализируется.
-- G[VERIFY]G G%LOCALAPPDATA%\Lively Wallpaper\WallpaperLayout.jsonG → GLivelyInfoPathG указывает на Aurora Glass.
+### Шаг 16. Живые обои Aurora Glass `[AUTO + MANUAL]`
+`scripts\16-live-wallpaper.ps1` собирает `C:\LivelyWallpapers\aurora-glass.zip` из `configs\lively\aurora-glass\` (`index.html` + `LivelyInfo.json`, `Type=1` = веб-обои) и открывает Lively.
+- `[MANUAL]` Lively → `+` → выбрать zip → кликнуть «Aurora Glass».
+- `[WARN]` `Lively.exe setwp --file <html|папка|zip>` в Lively 2.x пишет в журнал `Unsupported command import file` для файлов не из библиотеки; импорт только через окно. Класть пакет напрямую в `%LOCALAPPDATA%\Lively Wallpaper\Library\wallpapers` из упакованного приложения бесполезно: запись виртуализируется.
+- `[VERIFY]` `%LOCALAPPDATA%\Lively Wallpaper\WallpaperLayout.json` → `LivelyInfoPath` указывает на Aurora Glass.
 
 <img src="../screenshots/21-aurora.png" width="520">
 
-### Шаг 17. ShellGuard: автовосстановление после зависания Проводника G[AUTO]G (по желанию)
-Gscripts\17-shell-guard.ps1G копирует Gconfigs\ShellGuard.ps1G в GC:\ShellGuardG, создаёт ярлык автозагрузки в **настоящей** папке Startup и запускает скрипт скрытым окном. В GInstall-Auto.ps1G не входит.
-- Причина: Gexplorer.exeG иногда зависает (журнал: «Application Hang», Winlogon 1002 «Оболочка неожиданно завершила работу») и перезапускается. TaskbarX и подложка Lively (GWorkerWG) «осиротевают»: панель теряет центр и прозрачность, TaskbarX может вхолостую грузить процессор, живые обои пропадают, остаются статичные.
-- Логика: каждые 5 с сравнивается GStartTimeG процесса Gexplorer.exeG с GStartTimeG у TaskbarX и Lively; если они старше Проводника, через 10 с TaskbarX перезапускается (G-tbs=1 -color=0;0;0;0G), а Lively перезапускается целиком. Пауза между ремонтами 90 с, журнал GC:\ShellGuard\guard.logG.
-- G[WARN]G Повторное применение обоев командой GLively.exe setwpG / GclosewpG в такой ситуации не срабатывает (в журнале Lively нет записей, старый плеер остаётся скрытым): нужен полный перезапуск GLively.exeG, GLively.Player.WebView2.exeG, GLively.Watchdog.exeG.
-- G[WARN]G Диагностика: окно плеера Gvisible=FalseG и пропавший GWorkerWG (хэндл из журнала Lively GWorkerW initializedG), время запуска Gexplorer.exeG позже запуска TaskbarX/Lively.
-- G[WARN]G Страж лечит последствия. Причину зависания в Lite-сборке выяснить нельзя (отчёты WER отключены); подозреваемые: расширения Проводника AcrylicMenus и ExplorerBlurMica.
-- G[VERIFY]G Gpowershell -File C:\ShellGuard\ShellGuard.ps1 -CheckG показывает Gустарели : FalseG; G-RepairNowG перезапускает TaskbarX и Lively, строки видны в Gguard.logG и в журнале Lively (GSetting wallpaperG).
-- G[ROLLBACK]G G99-rollback.ps1G (останавливает страж, удаляет ярлык и папку GC:\ShellGuardG).
+### Шаг 17. ShellGuard: автовосстановление после зависания Проводника `[AUTO]` (по желанию)
+`scripts\17-shell-guard.ps1` копирует `configs\ShellGuard.ps1` в `C:\ShellGuard`, создаёт ярлык автозагрузки в **настоящей** папке Startup и запускает скрипт скрытым окном. В `Install-Auto.ps1` не входит.
+- Причина: `explorer.exe` иногда зависает (журнал: «Application Hang», Winlogon 1002 «Оболочка неожиданно завершила работу») и перезапускается. TaskbarX и подложка Lively (`WorkerW`) «осиротевают»: панель теряет центр и прозрачность, TaskbarX может вхолостую грузить процессор, живые обои пропадают, остаются статичные.
+- Логика: каждые 5 с сравнивается `StartTime` процесса `explorer.exe` с `StartTime` у TaskbarX и Lively; если они старше Проводника, через 10 с TaskbarX перезапускается (`-tbs=1 -color=0;0;0;0`), а Lively перезапускается целиком. Пауза между ремонтами 90 с, журнал `C:\ShellGuard\guard.log`.
+- `[WARN]` Повторное применение обоев командой `Lively.exe setwp` / `closewp` в такой ситуации не срабатывает (в журнале Lively нет записей, старый плеер остаётся скрытым): нужен полный перезапуск `Lively.exe`, `Lively.Player.WebView2.exe`, `Lively.Watchdog.exe`.
+- `[WARN]` Диагностика: окно плеера `visible=False` и пропавший `WorkerW` (хэндл из журнала Lively `WorkerW initialized`), время запуска `explorer.exe` позже запуска TaskbarX/Lively.
+- `[WARN]` Страж лечит последствия. Причину зависания в Lite-сборке выяснить нельзя (отчёты WER отключены); подозреваемые: расширения Проводника AcrylicMenus и ExplorerBlurMica.
+- `[VERIFY]` `powershell -File C:\ShellGuard\ShellGuard.ps1 -Check` показывает `устарели : False`; `-RepairNow` перезапускает TaskbarX и Lively, строки видны в `guard.log` и в журнале Lively (`Setting wallpaper`).
+- `[ROLLBACK]` `99-rollback.ps1` (останавливает страж, удаляет ярлык и папку `C:\ShellGuard`).
 
-### Шаг 18. PowerToys G[AUTO]G
-Gscripts\18-powertoys.ps1G скачивает GPowerToysUserSetup-*-x64.exeG из релизов Gmicrosoft/PowerToysG, проверяет подпись Microsoft и ставит тихо для пользователя в G%LOCALAPPDATA%\PowerToysG, затем запускает без прав администратора.
-- G[WARN]G Установщик около 320 МБ, кэшируется в G%TEMP%\win-customizationG.
-- G[WARN]G На Lite-сборке бандл падает с G0x80070003G: служба MSI не открывает файл из G%LOCALAPPDATA%\Package CacheG (ошибка 2203). Скрипт копирует MSI, пока бандл его распаковывает, и ставит его через Gmsiexec /i ... /qnG.
-- G[VERIFY]G процесс GPowerToysG запущен, есть G%LOCALAPPDATA%\PowerToys\PowerToys.exeG, GAlt + SpaceG открывает поиск.
-- G[ROLLBACK]G G99-rollback.ps1G (Gmsiexec /xG по коду продукта PowerToys из реестра).
+### Шаг 18. PowerToys `[AUTO]`
+`scripts\18-powertoys.ps1` скачивает `PowerToysUserSetup-*-x64.exe` из релизов `microsoft/PowerToys`, проверяет подпись Microsoft и ставит тихо для пользователя в `%LOCALAPPDATA%\PowerToys`, затем запускает без прав администратора.
+- `[WARN]` Установщик около 320 МБ, кэшируется в `%TEMP%\win-customization`.
+- `[WARN]` На Lite-сборке бандл падает с `0x80070003`: служба MSI не открывает файл из `%LOCALAPPDATA%\Package Cache` (ошибка 2203). Скрипт копирует MSI, пока бандл его распаковывает, и ставит его через `msiexec /i ... /qn`.
+- `[VERIFY]` процесс `PowerToys` запущен, есть `%LOCALAPPDATA%\PowerToys\PowerToys.exe`, `Alt + Space` открывает поиск.
+- `[ROLLBACK]` `99-rollback.ps1` (`msiexec /x` по коду продукта PowerToys из реестра).
 
-### Шаг 19. Open-Shell: меню «Пуск» на стекле G[AUTO]G
-Gscripts\19-open-shell.ps1G ставит из релиза GOpen-Shell/Open-Shell-MenuG только Start Menu (G/qn ADDLOCAL=StartMenuG, SHA-256 сверяется), пишет настройки в GHKCU:\Software\OpenShell\StartMenu\SettingsG (GMenuStyle=Win7G, GSkinW7=ImmersiveG, GSkinOptionsW7=DARK=1, TRANSPARENT_MORE=1G, GGlassOverride=1G, GGlassColor=0x1C1410G, GGlassOpacity=55G) и перезапускает GStartMenu.exeG.
-- G[WARN]G Установщику нужны права администратора; GStartMenu.exeG запускать от пользователя, иначе меню не перехватит Win.
-- G[VERIFY]G процесс GStartMenuG запущен, клавиша Win открывает стеклянное меню.
-- G[ROLLBACK]G G99-rollback.ps1G (Gmsiexec /xG по коду продукта и удаление GHKCU:\Software\OpenShellG).
+### Шаг 19. Open-Shell: меню «Пуск» на стекле `[AUTO]`
+`scripts\19-open-shell.ps1` ставит из релиза `Open-Shell/Open-Shell-Menu` только Start Menu (`/qn ADDLOCAL=StartMenu`, SHA-256 сверяется), пишет настройки в `HKCU:\Software\OpenShell\StartMenu\Settings` (`MenuStyle=Win7`, `SkinW7=Immersive`, `SkinOptionsW7=DARK=1, TRANSPARENT_MORE=1, DISABLE_MASK=1`, `GlassOverride=1`, `GlassColor=0x2A2420`, `GlassBlending=25`, `GlassOpacity=40`) и перезапускает `StartMenu.exe`.
+- `[WARN]` Установщику нужны права администратора; `StartMenu.exe` запускать от пользователя, иначе меню не перехватит Win.
+- `[WARN]` Скин Immersive даёт плоское матовое стекло; эффекта «жидкого стекла» macOS (преломление, блики) Open-Shell не умеет.
+- `[VERIFY]` процесс `StartMenu` запущен, клавиша Win открывает стеклянное меню.
+- `[ROLLBACK]` `99-rollback.ps1` (`msiexec /x` по коду продукта и удаление `HKCU:\Software\OpenShell`).
 
 ## 4. Грабли и ограничения
 
-1. **Виртуализация AppData у упакованных (MSIX) агентов.** Если исполнитель запущен из Store-приложения, запись в G%LOCALAPPDATA%G и G%APPDATA%G попадает в G...\Packages\<Приложение>\LocalCache\...G, и Проводник пользователя этих файлов не видит. Симптомы: «Расположение недоступно», ярлык автозагрузки не срабатывает после перезагрузки. Решение: программы в GC:\...G, ярлык автозагрузки писать по реальному пути G...\Roaming\Microsoft\Windows\Start Menu\Programs\StartupG, шаги выполнять с отключённой изоляцией песочницы.
+1. **Виртуализация AppData у упакованных (MSIX) агентов.** Если исполнитель запущен из Store-приложения, запись в `%LOCALAPPDATA%` и `%APPDATA%` попадает в `...\Packages\<Приложение>\LocalCache\...`, и Проводник пользователя этих файлов не видит. Симптомы: «Расположение недоступно», ярлык автозагрузки не срабатывает после перезагрузки. Решение: программы в `C:\...`, ярлык автозагрузки писать по реальному пути `...\Roaming\Microsoft\Windows\Start Menu\Programs\Startup`, шаги выполнять с отключённой изоляцией песочницы.
 2. **DWMBlurGlass** не запускается из профиля пользователя (см. шаг 3).
-3. **Перезапуск Проводника убивает TaskbarX.** После любого Gtaskkill /f /im explorer.exeG запускать TaskbarX заново.
+3. **Перезапуск Проводника убивает TaskbarX.** После любого `taskkill /f /im explorer.exe` запускать TaskbarX заново.
 4. **Окно «Параметры», Магазин, Почта и подобные UWP-окна** не становятся стеклянными: фон рисует само приложение. Стекло достаётся только рамке и заголовку (через DWMBlurGlass).
 5. **Telegram, браузеры, Cursor/VS Code**: полноценного размытия фона внутри окна нет. Можно задать только прозрачность окна, это не стекло.
-6. **Старые файлы webp** нельзя открыть через GSystem.DrawingG; при подготовке картинок использовать Pillow.
+6. **Старые файлы webp** нельзя открыть через `System.Drawing`; при подготовке картинок использовать Pillow.
 7. **fastfetch** не использован: логотип нарисован внутри профиля, чтобы не зависеть от внешнего бинарника.
 
 ## 5. Финальный чек-лист VERIFY
 
-GGGpowershell
+```powershell
 Get-Process TaskbarX, DWMBlurGlass, AcrylicMenusLoader -ErrorAction SilentlyContinue | Select Name
 Get-ChildItem ([Environment]::GetFolderPath('Startup')) | Select Name
 (Get-ItemProperty "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer").EnableAutoTray        # 1
@@ -289,7 +290,7 @@ Test-Path "HKCU:\Software\Classes\exefile\shell\EndProcess"                     
 (Get-ItemProperty -LiteralPath "HKCU:\Console\%%Startup").DelegationTerminal                         # {E12CFF52-...}
 Test-Path "$env:LOCALAPPDATA\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json"
 Test-Path $PROFILE.CurrentUserCurrentHost
-GGG
+```
 
 Визуально: иконки по центру и прозрачная панель; стеклянные заголовки в Проводнике; стеклянное меню ПКМ; новая вкладка PowerShell с логотипом Windows 7 и ровными столбцами.
 
@@ -311,7 +312,7 @@ GGG
 
 ## 7. Откат
 
-Gscripts\99-rollback.ps1G убирает всё автоматическое. Ручные компоненты удаляются штатно: DWMBlurGlass («Удалить»), Guninstall.cmdG у ExplorerBlurMica и AcrylicMenus, деинсталлятор 7+ Taskbar Tweaker, затем удалить папки в GC:\G. Настройки терминала и профиля восстанавливаются из G*.bakG.
+`scripts\99-rollback.ps1` убирает всё автоматическое. Ручные компоненты удаляются штатно: DWMBlurGlass («Удалить»), `uninstall.cmd` у ExplorerBlurMica и AcrylicMenus, деинсталлятор 7+ Taskbar Tweaker, затем удалить папки в `C:\`. Настройки терминала и профиля восстанавливаются из `*.bak`.
 
 ## 8. Источники
 
