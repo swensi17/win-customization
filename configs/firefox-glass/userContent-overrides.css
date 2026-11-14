@@ -1,0 +1,42 @@
+
+/* ---------- win-customization: новая вкладка ---------- */
+@-moz-document url("about:newtab"), url("about:home"), url-prefix("about:newtab") {
+  /* лёгкая тонировка, чтобы обои за стеклом не рябили */
+  body { background-color: rgba(14, 14, 20, 0.35) !important; }
+
+  /* плитки: без квадратных подложек, иконка в круглом стеклянном блоке */
+  .top-sites-list a,
+  section.top-sites a,
+  .top-site-outer,
+  .top-site-outer .top-site-button,
+  .top-site-outer:hover,
+  .top-site-outer:focus-within {
+    background: transparent !important;
+    background-color: transparent !important;
+    box-shadow: none !important;
+  }
+  .top-site-outer .tile {
+    background-color: rgba(255, 255, 255, 0.08) !important;
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+    border-radius: 18px !important;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25) !important;
+    backdrop-filter: blur(12px) !important;
+  }
+  .top-site-outer:hover .tile {
+    background-color: rgba(255, 255, 255, 0.14) !important;
+  }
+  .top-site-outer .tile .icon-wrapper,
+  .top-site-outer .default-icon,
+  .top-site-outer .tile .top-site-icon {
+    background-color: transparent !important;
+    border-radius: 12px !important;
+  }
+  /* иконка без картинки (например GitHub): светлая буква вместо пустого квадрата */
+  .top-site-outer .default-icon {
+    color: #f2f2f4 !important;
+  }
+  .top-site-outer .title {
+    color: rgba(242, 242, 244, 0.85) !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6) !important;
+  }
+}

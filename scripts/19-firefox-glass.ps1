@@ -40,6 +40,12 @@ foreach ($n in 'userChrome.css', 'userContent.css') {
 }
 Copy-Item (Join-Path $kit 'chrome.css') (Join-Path $chrome 'userChrome.css') -Force
 Copy-Item (Join-Path $kit 'content-glass.css') (Join-Path $chrome 'userContent.css') -Force
+# свои правки поверх темы: круглые стеклянные плитки на новой вкладке, на Windows 10 без двойных кнопок окна
+$ov = Join-Path (Split-Path $PSScriptRoot) 'configs\firefox-glass'
+Get-Content (Join-Path $ov 'userContent-overrides.css') -Raw -Encoding UTF8 | Add-Content (Join-Path $chrome 'userContent.css') -Encoding UTF8
+if (-not (Test-Win11)) {
+    Get-Content (Join-Path $ov 'userChrome-overrides-win10.css') -Raw -Encoding UTF8 | Add-Content (Join-Path $chrome 'userChrome.css') -Encoding UTF8
+}
 Set-Content (Join-Path $chrome 'RaiZee-version.txt') $Tag -Encoding ASCII
 
 # блок настроек в user.js между маркерами, чужие строки не трогаем

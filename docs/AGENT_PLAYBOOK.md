@@ -265,6 +265,7 @@
 ### Шаг 19. Стеклянная тема Firefox (RaiZee) `[AUTO]`
 `scripts\19-firefox-glass.ps1` находит профиль по умолчанию (секция `[Install…]` в `profiles.ini`), скачивает `RaiZee-Firefox-Glass.zip` из релиза `raizeeandsolutions/raizee-glass` (тег по умолчанию `v6.1`), сверяет SHA-256 с полем `digest` и копирует `chrome.css` → `chrome\userChrome.css`, `content-glass.css` → `chrome\userContent.css`, добавляет блок настроек в `user.js` между маркерами `// RaiZee prefs begin/end`.
 - `[WARN]` Батник, меню и `RaiZee.cfg` (AutoConfig в папке Firefox) из комплекта не запускаются: в v6.1 они не нужны, а AutoConfig выполняет код с полными правами браузера.
+- `[AUTO]` Поверх темы дописываются `configs\firefox-glass\userContent-overrides.css` (плитки новой вкладки) и на Windows 10 `userChrome-overrides-win10.css` (кнопки окна Firefox с `opacity: 0`, клики работают: иначе DWM и Firefox рисуют их дважды).
 - `[WARN]` Mica и прозрачность окна только на Windows 11 22H2+; на Windows 10 тема тёмная, окно может быть непрозрачным.
 - `[VERIFY]` в `chrome` профиля есть `RaiZee-version.txt`; после перезапуска Firefox интерфейс в стиле gwfox.
 - `[ROLLBACK]` `99-rollback.ps1` (удаляет файлы темы и блок в `user.js`, возвращает `*.before-raizee`).
