@@ -43,6 +43,7 @@ Copy-Item (Join-Path $kit 'content-glass.css') (Join-Path $chrome 'userContent.c
 # свои правки поверх темы: круглые стеклянные плитки на новой вкладке, на Windows 10 без двойных кнопок окна
 $ov = Join-Path (Split-Path $PSScriptRoot) 'configs\firefox-glass'
 Get-Content (Join-Path $ov 'userContent-overrides.css') -Raw -Encoding UTF8 | Add-Content (Join-Path $chrome 'userContent.css') -Encoding UTF8
+Get-Content (Join-Path $ov 'userChrome-overrides.css') -Raw -Encoding UTF8 | Add-Content (Join-Path $chrome 'userChrome.css') -Encoding UTF8
 if (-not (Test-Win11)) {
     Get-Content (Join-Path $ov 'userChrome-overrides-win10.css') -Raw -Encoding UTF8 | Add-Content (Join-Path $chrome 'userChrome.css') -Encoding UTF8
 }
