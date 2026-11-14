@@ -447,6 +447,18 @@ Windows Terminal ставится из Microsoft Store и становится �
 
 </details>
 <details>
+<summary><b>🦊 Firefox Glass</b>: стеклянная тема Firefox (RaiZee)</summary>
+
+<br>
+
+**Что делает.** Ставит тему RaiZee (основа: открытая тема [gwfox](https://github.com/akkva/gwfox)): полупрозрачный интерфейс вкладок и панели адреса, тёмная тема страниц, прозрачная новая вкладка.
+
+**Установка.** `scripts/19-firefox-glass.ps1` (входит в `Install-Auto.ps1`, права администратора не нужны): берёт `RaiZee-Firefox-Glass.zip` из релиза [raizeeandsolutions/raizee-glass](https://github.com/raizeeandsolutions/raizee-glass), сверяет SHA-256 и кладёт в профиль по умолчанию `chrome/userChrome.css`, `chrome/userContent.css` и блок настроек в `user.js` между маркерами `// RaiZee prefs`. Батник и AutoConfig из комплекта не используются. Тема включается после перезапуска Firefox.
+
+**Ловушки:** прозрачность окна (Mica) по-настоящему работает только на Windows 11 22H2+, на Windows 10 интерфейс тёмный, но окно может остаться непрозрачным. После крупного обновления Firefox стиль может съехать: повтори шаг. Если в профиле уже была своя тема, она сохраняется как `*.before-raizee`. Откат: `scripts/99-rollback.ps1` (удаляет файлы темы и блок настроек, возвращает прежнюю тему).
+
+</details>
+<details>
 <summary><b>🎨 Обои</b>: тёмные градиенты 4K</summary>
 
 <br>
@@ -525,6 +537,7 @@ Set-ExecutionPolicy -Scope Process Bypass
     <tr><td>16</td><td>живые обои Aurora Glass (Lively)</td><td><code>AUTO</code> + <code>MANUAL</code></td></tr>
     <tr><td>17</td><td>ShellGuard: автовосстановление после зависания Проводника (по желанию)</td><td><code>AUTO</code></td></tr>
     <tr><td>18</td><td>PowerToys: поиск по Alt + Space, зоны окон, утилиты</td><td><code>AUTO</code></td></tr>
+    <tr><td>19</td><td>Firefox Glass: стеклянная тема Firefox</td><td><code>AUTO</code></td></tr>
   </tbody>
 </table>
 

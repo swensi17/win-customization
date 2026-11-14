@@ -29,5 +29,23 @@ Get-Process PowerToys* -ErrorAction SilentlyContinue | Stop-Process -Force
 Get-ChildItem 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Uninstall', 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall' -ErrorAction SilentlyContinue |
     Where-Object { (Get-ItemProperty $_.PSPath).DisplayName -like 'PowerToys*' -and $_.PSChildName -match '^\{.+\}$' } |
     ForEach-Object { Start-Process msiexec -ArgumentList '/x', $_.PSChildName, '/qn', '/norestart' -Wait }
+# тема Firefox RaiZee: убрать файлы темы и блок настроек, вернуть прежнюю тему, если была
+Get-ChildItem "$env:APPDATA\Mozilla\Firefox\Profiles" -Directory -ErrorAction SilentlyContinue | ForEach-Object {
+    $chrome = Join-Path $_.FullName 'chrome'
+    if (Test-Path (Join-Path $chrome 'RaiZee-version.txt')) {
+        foreach ($n in 'userChrome.css', 'userContent.css') {
+            $t = Join-Path $chrome $n
+            Remove-Item $t -Force -ErrorAction SilentlyContinue
+            if (Test-Path "$t.before-raizee") { Move-Item "$t.before-raizee" $t -Force }
+        }
+        Remove-Item (Join-Path $chrome 'RaiZee-version.txt') -Force
+    }
+    $userJs = Join-Path $_.FullName 'user.js'
+    if (Test-Path $userJs) {
+        $skip = $false
+        $kept = Get-Content $userJs | Where-Object { if ($_.Trim() -eq '// RaiZee prefs begin') { $skip = $true; return $false }; if ($_.Trim() -eq '// RaiZee prefs end') { $skip = $false; return $false }; -not $skip }
+        if ($kept) { Set-Content $userJs $kept -Encoding UTF8 } else { Remove-Item $userJs -Force }
+    }
+}
 Write-Host "Вручную: DWMBlurGlass -> 'Удалить'; C:\ExplorerBlurMica\Release\uninstall.cmd; C:\AcrylicMenus\Installer\Uninstall.cmd; 7+ Taskbar Tweaker -> деинсталлятор; затем удали папки в C:\." -ForegroundColor Yellow
 Stop-Process -Name explorer -Force
